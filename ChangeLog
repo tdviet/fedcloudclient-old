@@ -1,0 +1,15 @@
+Version 0.0.1
+
+Major changes
+- Add openstack client command
+- Add support for access token instead of refresh token. Now users can choose
+    whether to use access token or refresh token
+- Rename package to egi-fedcloud-client
+- Rename CLI command to fedcloud
+- Add command "token check" for checking validity of access token
+- Split list-vos to separate command "token list-vos" from "token refresh"
+
+
+Minor changes
+- Refactoring checkin.py and endpoint.py (regarding support of access token)
+

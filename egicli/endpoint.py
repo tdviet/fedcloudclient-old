@@ -1,6 +1,7 @@
 from __future__ import print_function
 
 import os
+import re
 import time
 import defusedxml.ElementTree as ET
 
@@ -10,11 +11,10 @@ from six.moves.urllib import parse
 import requests
 from tabulate import tabulate
 
-
 from egicli.checkin import refresh_access_token
+from egicli.checkin import get_access_token
 
 GOCDB_PUBLICURL = "https://goc.egi.eu/gocdbpi/public/"
-
 
 EC3_REFRESHTOKEN_TEMPLATE = """
 description refreshtoken (
@@ -80,7 +80,7 @@ def get_sites():
             sites.append(s.attrib.get('NAME'))
     else:
         print("Something went wrong...")
-        print(r.status)
+        print(r.status_code)
         print(r.text)
     return sites
 
@@ -114,7 +114,7 @@ def find_endpoint(service_type, production=True, monitored=True, site=None):
             endpoints.append([sp.find("SITENAME").text, service_type, os_url])
     else:
         print("Something went wrong...")
-        print(r.status)
+        print(r.status_code)
         print(r.text)
     return endpoints
 
@@ -129,7 +129,7 @@ def get_keystone_url(os_auth_url, path):
 
 
 def get_unscoped_token(os_auth_url, access_token):
-    """Get an unscopped token, trying various protocol names if needed"""
+    """Get an unscoped token, trying various protocol names if needed"""
     protocols = ["openid", "oidc"]
     for p in protocols:
         try:
@@ -157,7 +157,7 @@ def get_scoped_token(os_auth_url, access_token, project_id):
 
 
 def retrieve_unscoped_token(os_auth_url, access_token, protocol="openid"):
-    """Request an unscopped token"""
+    """Request an unscoped token"""
     url = get_keystone_url(
         os_auth_url,
         "/v3/OS-FEDERATION/identity_providers/egi.eu/protocols/%s/auth" % protocol,
@@ -176,8 +176,49 @@ def get_projects(os_auth_url, unscoped_token):
     return r.json()["projects"]
 
 
+def get_projects_from_sites(access_token, site):
+    """
+    Get all projects from sites using access token
+    :param access_token:
+    :param site:
+    :return: List of projects
+    """
+    project_list = []
+    for ep in find_endpoint("org.openstack.nova", site=site):
+        os_auth_url = ep[2]
+        unscoped_token, _ = get_unscoped_token(os_auth_url, access_token)
+        project_list.extend(
+            [
+                [p["id"], p["name"], p["enabled"], ep[0]]
+                for p in get_projects(os_auth_url, unscoped_token)
+            ]
+        )
+    return project_list
+
+def get_project_id_from_vo_site(access_token, vo, site):
+    """
+    Get project ID from site according to VO name
+    :param access_token:
+    :param vo:
+    :param site:
+    :return: project ID
+    """
+    if site is None:
+        return None
+    project_list = get_projects_from_sites(access_token, site)
+    m = re.compile("^(VO:|vo_)*"+vo+"$")
+    for project in project_list:
+        if m.match(project[1]):
+            print(project)
+            return project[0]
+    return None
+
 @click.group()
 def endpoint():
+    """
+    CLI endpoint command group.  Execute "fedcloud endpoint" to see more
+    :return:
+    """
     pass
 
 
@@ -185,19 +226,21 @@ def endpoint():
 @click.option(
     "--checkin-client-id",
     help="Check-in client id",
-    required=True,
     default=lambda: os.environ.get("CHECKIN_CLIENT_ID", None),
 )
 @click.option(
     "--checkin-client-secret",
     help="Check-in client secret",
-    required=True,
     default=lambda: os.environ.get("CHECKIN_CLIENT_SECRET", None),
 )
 @click.option(
     "--checkin-refresh-token",
-    help="Check-in client id",
-    required=True,
+    help="Check-in refresh token",
+    default=lambda: os.environ.get("CHECKIN_REFRESH_TOKEN", None),
+)
+@click.option(
+    "--checkin-access-token",
+    help="Check-in access token",
     default=lambda: os.environ.get("CHECKIN_REFRESH_TOKEN", None),
 )
 @click.option(
@@ -212,22 +255,30 @@ def endpoint():
     default=lambda: os.environ.get("EGI_SITE", None),
 )
 def projects(
-    checkin_client_id, checkin_client_secret, checkin_refresh_token, checkin_url, site
+        checkin_client_id,
+        checkin_client_secret,
+        checkin_refresh_token,
+        checkin_access_token,
+        checkin_url,
+        site
 ):
-    # Get the right endpoint from GOCDB
-    project_list = []
-    access_token = refresh_access_token(
-        checkin_client_id, checkin_client_secret, checkin_refresh_token, checkin_url
-    )
-    for ep in find_endpoint("org.openstack.nova", site=site):
-        os_auth_url = ep[2]
-        unscoped_token, _ = get_unscoped_token(os_auth_url, access_token)
-        project_list.extend(
-            [
-                [p["id"], p["name"], p["enabled"], ep[0]]
-                for p in get_projects(os_auth_url, unscoped_token)
-            ]
-        )
+    """
+    CLI command for list of all project from specific site/sites
+    :param checkin_client_id:
+    :param checkin_client_secret:
+    :param checkin_refresh_token:
+    :param checkin_access_token:
+    :param checkin_url:
+    :param site:
+    :return:
+    """
+    access_token = get_access_token(checkin_access_token,
+                                    checkin_refresh_token,
+                                    checkin_client_id,
+                                    checkin_client_secret,
+                                    checkin_url)
+
+    project_list = get_projects_from_sites(access_token, site)
     print(tabulate(project_list, headers=["id", "Name", "enabled", "site"]))
 
 
@@ -235,20 +286,22 @@ def projects(
 @click.option(
     "--checkin-client-id",
     help="Check-in client id",
-    required=True,
     default=lambda: os.environ.get("CHECKIN_CLIENT_ID", None),
 )
 @click.option(
     "--checkin-client-secret",
     help="Check-in client secret",
-    required=True,
     default=lambda: os.environ.get("CHECKIN_CLIENT_SECRET", None),
 )
 @click.option(
     "--checkin-refresh-token",
     help="Check-in client id",
-    required=True,
     default=lambda: os.environ.get("CHECKIN_REFRESH_TOKEN", None),
+)
+@click.option(
+    "--checkin-access-token",
+    help="Check-in access token",
+    default=lambda: os.environ.get("CHECKIN_ACCESS_TOKEN", None),
 )
 @click.option(
     "--checkin-url",
@@ -266,22 +319,25 @@ def projects(
     default=lambda: os.environ.get("OS_PROJECT_ID", None),
 )
 def token(
-    checkin_client_id,
-    checkin_client_secret,
-    checkin_refresh_token,
-    checkin_url,
-    project_id,
-    site,
+        checkin_client_id,
+        checkin_client_secret,
+        checkin_refresh_token,
+        checkin_access_token,
+        checkin_url,
+        project_id,
+        site,
 ):
-    # Get the right endpoint from GOCDB
-    access_token = refresh_access_token(
-        checkin_client_id, checkin_client_secret, checkin_refresh_token, checkin_url
-    )
+    access_token = get_access_token(checkin_access_token,
+                                    checkin_refresh_token,
+                                    checkin_client_id,
+                                    checkin_client_secret,
+                                    checkin_url)
+    # Getting sites from GOCDB
     # assume first one is ok
     ep = find_endpoint("org.openstack.nova", site=site).pop()
     os_auth_url = ep[2]
-    token, _ = get_scoped_token(os_auth_url, access_token, project_id)
-    print('export OS_TOKEN="%s"' % token)
+    scoped_token, _ = get_scoped_token(os_auth_url, access_token, project_id)
+    print('export OS_TOKEN="%s"' % scoped_token)
 
 
 @endpoint.command()
@@ -316,11 +372,11 @@ def token(
     default="auth.dat",
 )
 def ec3_refresh(
-    checkin_client_id,
-    checkin_client_secret,
-    checkin_refresh_token,
-    checkin_url,
-    auth_file,
+        checkin_client_id,
+        checkin_client_secret,
+        checkin_refresh_token,
+        checkin_url,
+        auth_file,
 ):
     # Get the right endpoint from GOCDB
     access_token = refresh_access_token(
@@ -362,20 +418,22 @@ def ec3_refresh(
 @click.option(
     "--checkin-client-id",
     help="Check-in client id",
-    required=True,
     default=lambda: os.environ.get("CHECKIN_CLIENT_ID", None),
 )
 @click.option(
     "--checkin-client-secret",
     help="Check-in client secret",
-    required=True,
     default=lambda: os.environ.get("CHECKIN_CLIENT_SECRET", None),
 )
 @click.option(
     "--checkin-refresh-token",
     help="Check-in client id",
-    required=True,
     default=lambda: os.environ.get("CHECKIN_REFRESH_TOKEN", None),
+)
+@click.option(
+    "--checkin-access-token",
+    help="Check-in access token",
+    default=lambda: os.environ.get("CHECKIN_ACCESS_TOKEN", None),
 )
 @click.option(
     "--checkin-url",
@@ -406,22 +464,27 @@ def ec3_refresh(
 )
 @click.option("--force", is_flag=True, help="Force rewrite of files")
 def ec3(
-    checkin_client_id,
-    checkin_client_secret,
-    checkin_refresh_token,
-    checkin_url,
-    site,
-    project_id,
-    auth_file,
-    template_dir,
-    force,
+        checkin_client_id,
+        checkin_client_secret,
+        checkin_refresh_token,
+        checkin_access_token,
+        checkin_url,
+        site,
+        project_id,
+        auth_file,
+        template_dir,
+        force,
 ):
     if os.path.exists(auth_file) and not force:
         print("Auth file already exists, not replacing unless --force option is included")
         raise click.Abort()
-    access_token = refresh_access_token(
-        checkin_client_id, checkin_client_secret, checkin_refresh_token, checkin_url
-    )
+
+    access_token = get_access_token(checkin_access_token,
+                                    checkin_refresh_token,
+                                    checkin_client_id,
+                                    checkin_client_secret,
+                                    checkin_url)
+
     # Get the right endpoint from GOCDB
     # assume first one is ok
     ep = find_endpoint("org.openstack.nova", site=site).pop()
@@ -464,6 +527,14 @@ def ec3(
     "--site", help="Name of the site", default=lambda: os.environ.get("EGI_SITE", None)
 )
 def list(service_type, production, monitored, site):
+    """
+    List of endpoints of site/sites according info in GOCDB
+    :param service_type:
+    :param production:
+    :param monitored:
+    :param site:
+    :return:
+    """
     endpoints = find_endpoint(service_type, production, monitored, site)
     print(tabulate(endpoints, headers=["Site", "type", "URL"]))
 
@@ -472,20 +543,22 @@ def list(service_type, production, monitored, site):
 @click.option(
     "--checkin-client-id",
     help="Check-in client id",
-    required=True,
     default=lambda: os.environ.get("CHECKIN_CLIENT_ID", None),
 )
 @click.option(
     "--checkin-client-secret",
     help="Check-in client secret",
-    required=True,
     default=lambda: os.environ.get("CHECKIN_CLIENT_SECRET", None),
 )
 @click.option(
     "--checkin-refresh-token",
     help="Check-in client id",
-    required=True,
     default=lambda: os.environ.get("CHECKIN_REFRESH_TOKEN", None),
+)
+@click.option(
+    "--checkin-access-token",
+    help="Check-in access token",
+    default=lambda: os.environ.get("CHECKIN_ACCESS_TOKEN", None),
 )
 @click.option(
     "--checkin-url",
@@ -506,21 +579,35 @@ def list(service_type, production, monitored, site):
     default=lambda: os.environ.get("OS_PROJECT_ID", None),
 )
 def env(
-    checkin_client_id,
-    checkin_client_secret,
-    checkin_refresh_token,
-    checkin_url,
-    project_id,
-    site,
+        checkin_client_id,
+        checkin_client_secret,
+        checkin_refresh_token,
+        checkin_access_token,
+        checkin_url,
+        project_id,
+        site,
 ):
+    """
+    CLI commnand for generating environment variables for specific project/site
+    :param checkin_client_id:
+    :param checkin_client_secret:
+    :param checkin_refresh_token:
+    :param checkin_access_token:
+    :param checkin_url:
+    :param project_id:
+    :param site:
+    :return: None
+    """
+    access_token = get_access_token(checkin_access_token,
+                                    checkin_refresh_token,
+                                    checkin_client_id,
+                                    checkin_client_secret,
+                                    checkin_url)
     # Get the right endpoint from GOCDB
-    access_token = refresh_access_token(
-        checkin_client_id, checkin_client_secret, checkin_refresh_token, checkin_url
-    )
     # assume first one is ok
     ep = find_endpoint("org.openstack.nova", site=site).pop()
     os_auth_url = ep[2]
-    token, protocol = get_scoped_token(os_auth_url, access_token, project_id)
+    scoped_token, protocol = get_scoped_token(os_auth_url, access_token, project_id)
     print("# environment for %s" % site)
     print('export OS_AUTH_URL="%s"' % os_auth_url)
     print('export OS_AUTH_TYPE="v3oidcaccesstoken"')
