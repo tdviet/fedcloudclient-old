@@ -42,7 +42,7 @@ def fedcloud_openstack_full(
 
     endpoint, project_id = find_endpoint_and_project_id(site, vo)
     if endpoint is None:
-        raise RuntimeError("Site %s or VO %s not found" % (site, vo))
+        return 1, ("Site %s or VO %s not found" % (site, vo))
 
     options = ("--os-auth-url", endpoint,
                "--os-auth-type", checkin_auth_type,

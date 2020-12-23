@@ -86,7 +86,7 @@ def find_endpoint_and_project_id(site_name, vo):
 @click.group()
 def site():
     """
-    CLI site command group.  Execute "fedcloud endpoint" to see more
+    CLI site command group.  Execute "fedcloud site" to see more
     :return:
     """
     pass
@@ -100,6 +100,11 @@ def site():
     default=lambda: os.environ.get("EGI_SITE", None),
 )
 def print_site(site):
+    """
+    Print information about specified site
+    :param site:
+    :return: None
+    """
     site_info = find_site_data(site)
     if site_info:
         print(json.dumps(site_info, indent=2))
