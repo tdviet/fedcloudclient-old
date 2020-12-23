@@ -195,8 +195,10 @@ def get_projects_from_sites(access_token, site):
         )
     return project_list
 
+
 def get_project_id_from_vo_site(access_token, vo, site):
     """
+    WARNING: Deprecated in favor of new functions in sites.py
     Get project ID from site according to VO name
     :param access_token:
     :param vo:
@@ -206,12 +208,13 @@ def get_project_id_from_vo_site(access_token, vo, site):
     if site is None:
         return None
     project_list = get_projects_from_sites(access_token, site)
-    m = re.compile("^(VO:|vo_)*"+vo+"$")
+    m = re.compile("^(VO:|vo_)*" + vo + "$")
     for project in project_list:
         if m.match(project[1]):
             print(project)
             return project[0]
     return None
+
 
 @click.group()
 def endpoint():

@@ -7,7 +7,7 @@ import sys
 import openstackclient.shell
 
 from egicli.checkin import get_access_token
-from egicli.endpoint import find_endpoint, get_project_id_from_vo_site
+from egicli.sites import find_endpoint_and_project_id
 
 DEFAULT_PROTOCOL = "openid"
 DEFAULT_AUTH_TYPE = "v3oidcaccesstoken"
@@ -40,12 +40,11 @@ def fedcloud_openstack_full(
     :return:
     """
 
-    ep = find_endpoint("org.openstack.nova", site=site).pop()
-    os_auth_url = ep[2]
+    endpoint, project_id = find_endpoint_and_project_id(site, vo)
+    if endpoint is None:
+        raise RuntimeError("Site %s or VO %s not found" % (site, vo))
 
-
-
-    options = ("--os-auth-url", os_auth_url,
+    options = ("--os-auth-url", endpoint,
                "--os-auth-type", checkin_auth_type,
                "--os-protocol", checkin_protocol,
                "--os-identity-provider", checkin_identity_provider,
@@ -53,8 +52,7 @@ def fedcloud_openstack_full(
                )
 
     if vo:
-        project_id = get_project_id_from_vo_site(checkin_access_token, vo, site)
-        options = options+ ("--os-project-id", project_id)
+        options = options + ("--os-project-id", project_id)
 
     # Output JSON format is useful for further machine processing
     if json_output:
@@ -184,10 +182,10 @@ def openstack(
     """
 
     access_token = get_access_token(checkin_access_token,
-                                   checkin_refresh_token,
-                                   checkin_client_id,
-                                   checkin_client_secret,
-                                   checkin_url)
+                                    checkin_refresh_token,
+                                    checkin_client_id,
+                                    checkin_client_secret,
+                                    checkin_url)
 
     error_code, result = fedcloud_openstack(
         access_token,

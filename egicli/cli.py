@@ -1,6 +1,7 @@
 import logging
 
 import click
+from egicli.sites import site
 
 from egicli.checkin import token
 from egicli.endpoint import endpoint
@@ -18,6 +19,7 @@ def cli(debug):
 cli.add_command(token)
 cli.add_command(endpoint)
 cli.add_command(openstack)
+cli.add_command(site)
 
 if __name__ == "__main__":
     cli()

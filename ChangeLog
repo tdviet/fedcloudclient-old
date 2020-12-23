@@ -8,8 +8,14 @@ Major changes
 - Rename CLI command to fedcloud
 - Add command "token check" for checking validity of access token
 - Split list-vos to separate command "token list-vos" from "token refresh"
-
+- Split functionalities to frontend and backend function. Backend functions have no output
+except for returned values, and so can be used as libraries for other projects
 
 Minor changes
-- Refactoring checkin.py and endpoint.py (regarding support of access token)
+- Refactoring checkin.py and endpoint.py
+
+Version 0.0.2
+- Add sites.py read site info from github
+-
+
 

@@ -106,7 +106,8 @@ def get_access_token(
         expiration_timestamp = int(payload['exp'])
         current_timestamp = int(time.time())
         if current_timestamp > expiration_timestamp + 10:
-            raise SystemExit("Access token has expired")
+            raise SystemExit("The give access token has expired.",
+                             "Getting new access token before continuing on operation")
         return checkin_access_token
     else:
         raise SystemExit("Error: Either access token or refresh token + client ID",
