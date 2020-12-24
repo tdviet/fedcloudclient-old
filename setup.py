@@ -3,5 +3,5 @@ import os
 
 import setuptools
 
-os.environ['PBR_VERSION'] = "0.0.1"
+os.environ['PBR_VERSION'] = "0.0.4"
 setuptools.setup(setup_requires=["pbr"], pbr=True)
