@@ -16,7 +16,7 @@ Quick start
 
    $ pip install fedcloudclient
 
-- Get a refreshed access token from Check-in according to instruction from
+- Get a refreshed access token from Check-in according to instructions from
   FedCloud `Check-in client <https://aai.egi.eu/fedcloud/>`_.
 
 - Check the validity of the access token using *fedcloud* command:
@@ -46,19 +46,40 @@ Quick start
 
     $ fedcloud site save-config
 
-- Listing VMs in fedcloud.egi.eu VO on CESNET-MCC site:
+- List VMs in fedcloud.egi.eu VO on CESNET-MCC site:
 
 ::
 
     $ fedcloud openstack server list --site CESNET-MCC --vo fedcloud.egi.eu --checkin-access-token ACCESS_TOKEN
 
-- Get some helps from the command-line client and experiment with them:
+- Learn more commands of *fedcloud* client and experiment with them:
 
 ::
 
     $ fedcloud --help
     $ fedcloud openstack --help
     $ fedcloud site --help
+
+- Experiment with more Openstack commands, e.g. *"fedcloud openstack image list"*. The full list of Openstack commands
+  are available `here <https://docs.openstack.org/python-openstackclient/latest/cli/command-list.html>`_.
+
+Using fedcloudclient as development library
+===========================================
+
+All functionalities offered by the *fedcloud* client can be used as a library for development of other tools and
+services for EGI Federated Cloud. For example, performing openstack command as a function in Python:
+
+::
+
+    from fedcloudclient import fedcloud_openstack
+    ....
+    json_object = fedcloud_openstack(
+        checkin_access_token,
+        site,
+        vo,
+        openstack_command)
+
+More documentations will be available soon.
 
 FAQ
 ===
