@@ -11,8 +11,8 @@ from six.moves.urllib import parse
 import requests
 from tabulate import tabulate
 
-from egicli.checkin import refresh_access_token
-from egicli.checkin import get_access_token
+from fedcloudclient.checkin import refresh_access_token
+from fedcloudclient.checkin import get_access_token
 
 GOCDB_PUBLICURL = "https://goc.egi.eu/gocdbpi/public/"
 
@@ -34,7 +34,7 @@ configure front (
       changed_when: false
       failed_when: docker_installed.rc not in [0,1]
       register: docker_installed
-    - name: local install of egicli
+    - name: local install of fedcloudclient
       block:
       - name: Create dir /usr/local/ec3/
         file: path=/usr/local/ec3/ state=directory
@@ -42,24 +42,24 @@ configure front (
         package:
           name: git
           state: present
-      - name: install egicli
+      - name: install fedcloudclient
         pip:
           name:
           - git+http://github.com/enolfc/egicli@ec3
       - cron:
           name: "refresh token"
           minute: "*/5"
-          job: "[ -f /usr/local/ec3/auth.dat ] && /usr/local/bin/egicli endpoint ec3-refresh --checkin-client-id {{ CLIENT_ID }} --checkin-client-secret {{ CLIENT_SECRET }} --checkin-refresh-token {{ REFRESH_TOKEN }} --auth-file /usr/local/ec3/auth.dat &> /var/log/refresh.log"
+          job: "[ -f /usr/local/ec3/auth.dat ] && /usr/local/bin/fedcloudclient endpoint ec3-refresh --checkin-client-id {{ CLIENT_ID }} --checkin-client-secret {{ CLIENT_SECRET }} --checkin-refresh-token {{ REFRESH_TOKEN }} --auth-file /usr/local/ec3/auth.dat &> /var/log/refresh.log"
           user: root
           cron_file: refresh_token
           state: present
       when: docker_installed.rc not in [ 0 ]
-    - name: local install of egicli
+    - name: local install of fedcloudclient
       block:
       - cron:
           name: "refresh token"
           minute: "*/5"
-          job: "[ -f /usr/local/ec3/auth.dat ] && docker run -v /usr/local/ec3/auth.dat:/usr/local/ec3/auth.dat egifedcloud/egicli egicli endpoint ec3-refresh --checkin-client-id {{ CLIENT_ID }} --checkin-client-secret {{ CLIENT_SECRET }} --checkin-refresh-token {{ REFRESH_TOKEN }} --auth-file /usr/local/ec3/auth.dat &> /var/log/refresh.log"
+          job: "[ -f /usr/local/ec3/auth.dat ] && docker run -v /usr/local/ec3/auth.dat:/usr/local/ec3/auth.dat egifedcloud/fedcloudclient fedcloudclient endpoint ec3-refresh --checkin-client-id {{ CLIENT_ID }} --checkin-client-secret {{ CLIENT_SECRET }} --checkin-refresh-token {{ REFRESH_TOKEN }} --auth-file /usr/local/ec3/auth.dat &> /var/log/refresh.log"
           user: root
           cron_file: refresh_token
           state: present
@@ -219,7 +219,7 @@ def get_project_id_from_vo_site(access_token, vo, site):
 @click.group()
 def endpoint():
     """
-    CLI endpoint command group.  Execute "fedcloud endpoint" to see more
+    CLI endpoint command group.
     :return:
     """
     pass
@@ -267,13 +267,6 @@ def projects(
 ):
     """
     CLI command for list of all project from specific site/sites
-    :param checkin_client_id:
-    :param checkin_client_secret:
-    :param checkin_refresh_token:
-    :param checkin_access_token:
-    :param checkin_url:
-    :param site:
-    :return:
     """
     access_token = get_access_token(checkin_access_token,
                                     checkin_refresh_token,
@@ -330,6 +323,9 @@ def token(
         project_id,
         site,
 ):
+    """
+    Get scoped keystone token from site and project ID
+    """
     access_token = get_access_token(checkin_access_token,
                                     checkin_refresh_token,
                                     checkin_client_id,
@@ -532,11 +528,6 @@ def ec3(
 def list(service_type, production, monitored, site):
     """
     List of endpoints of site/sites according info in GOCDB
-    :param service_type:
-    :param production:
-    :param monitored:
-    :param site:
-    :return:
     """
     endpoints = find_endpoint(service_type, production, monitored, site)
     print(tabulate(endpoints, headers=["Site", "type", "URL"]))
@@ -592,14 +583,6 @@ def env(
 ):
     """
     CLI commnand for generating environment variables for specific project/site
-    :param checkin_client_id:
-    :param checkin_client_secret:
-    :param checkin_refresh_token:
-    :param checkin_access_token:
-    :param checkin_url:
-    :param project_id:
-    :param site:
-    :return: None
     """
     access_token = get_access_token(checkin_access_token,
                                     checkin_refresh_token,

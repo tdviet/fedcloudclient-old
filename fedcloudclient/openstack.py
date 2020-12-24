@@ -6,8 +6,8 @@ import click
 import sys
 import openstackclient.shell
 
-from egicli.checkin import get_access_token
-from egicli.sites import find_endpoint_and_project_id
+from fedcloudclient.checkin import get_access_token
+from fedcloudclient.sites import find_endpoint_and_project_id
 
 DEFAULT_PROTOCOL = "openid"
 DEFAULT_AUTH_TYPE = "v3oidcaccesstoken"
@@ -170,15 +170,6 @@ def openstack(
 ):
     """
     CLI function for calling openstack client
-    :param checkin_client_id:
-    :param checkin_client_secret:
-    :param checkin_refresh_token:
-    :param checkin_access_token:
-    :param checkin_url:
-    :param site:
-    :param vo:
-    :param openstack_command:
-    :return:
     """
 
     access_token = get_access_token(checkin_access_token,

@@ -1,11 +1,9 @@
 # EGI CLI: A command line for EGI Federation
 
-`egicli` is a simple command line interface for interacting with some of the
-services of EGI. It simplifies the discovery of endpoints and provides users
-with the configuration for other 3rd party tools (e.g. OpenStack clients)
+`egicli` is a simple command line interface for interacting with some of the services of EGI. It simplifies the
+discovery of endpoints and provides users with the configuration for other 3rd party tools (e.g. OpenStack clients)
 
-We are focusing on the EGI Cloud service, but other services may be supported
-in the future
+We are focusing on the EGI Cloud service, but other services may be supported in the future
 
 ## Installation
 
@@ -17,12 +15,10 @@ Just use pip (probably better on a virtualenv):
 pip install egicli
 ```
 
-Make sure that your environment has the EGI CAs properly installed and
-configured for python:
+Make sure that your environment has the EGI CAs properly installed and configured for python:
 
-
-If you don’t have the CA certificates installed in your machine, you can get
-them from the [UMD EGI core Trust Anchor Distribution](http://repository.egi.eu/?category_name=cas)
+If you don’t have the CA certificates installed in your machine, you can get them from
+the [UMD EGI core Trust Anchor Distribution](http://repository.egi.eu/?category_name=cas)
 
 Once installed, get the location of the requests CA bundle with:
 
@@ -30,8 +26,7 @@ Once installed, get the location of the requests CA bundle with:
 python -m requests.certs
 ```
 
-If the output of that command is `/etc/ssl/certs/ca-certificates.crt`, you can
-add EGI CAs by executing:
+If the output of that command is `/etc/ssl/certs/ca-certificates.crt`, you can add EGI CAs by executing:
 
 ```
 cd /usr/local/share/ca-certificates
@@ -47,8 +42,7 @@ ln -s /etc/grid-security/certificates/*.pem .
 update-ca-trust extract
 ```
 
-Otherwise, you are using internal requests bundle, which can be augmented with
-the EGI CAs with:
+Otherwise, you are using internal requests bundle, which can be augmented with the EGI CAs with:
 
 ```
 cat /etc/grid-security/certificates/*.pem >> $(python -m requests.certs)
@@ -64,8 +58,8 @@ docker pull egifoundation/egicli
 
 ## Usage
 
-The `egicli` has a `--help` option that should guide you through the different
-options. Below you can find some more information about the commands.
+The `egicli` has a `--help` option that should guide you through the different options. Below you can find some more
+information about the commands.
 
 Some options take their default values from environment variables if defined:
 
@@ -89,11 +83,10 @@ Options:
   --help                        Show this message and exit.
 ```
 
-Gets a refreshed access token from Check-in. You can get the id, secret and
-refresh token from the [Fedcloud Check-in client](https://aai.egi.eu/fedcloud/)
+Gets a refreshed access token from Check-in. You can get the id, secret and refresh token from
+the [Fedcloud Check-in client](https://aai.egi.eu/fedcloud/)
 
-If `--list-vos` option is specified, the entitlements related to VOs will be
-also displayed.
+If `--list-vos` option is specified, the entitlements related to VOs will be also displayed.
 
 ```
 $ egicli token refresh

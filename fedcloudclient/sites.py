@@ -1,11 +1,13 @@
 import json
 import os
+from pathlib import Path
 from urllib.request import urlopen
 
 import click
 import yaml
 
-site_info_files = [
+# Default site configs from GitHub
+default_site_configs = [
     "https://raw.githubusercontent.com/EGI-Foundation/fedcloud-catchall-operations/master/sites/100IT.yaml",
     "https://raw.githubusercontent.com/EGI-Foundation/fedcloud-catchall-operations/master/sites/BIFI.yaml",
     "https://raw.githubusercontent.com/EGI-Foundation/fedcloud-catchall-operations/master/sites/CESGA.yaml",
@@ -30,31 +32,79 @@ site_info_files = [
     "https://raw.githubusercontent.com/EGI-Foundation/fedcloud-catchall-operations/master/sites/fedcloud.srce.hr.yaml",
 ]
 
-site_info_data = []
+site_config_data = []
+
+local_config_dir = ".fedcloud-site-config/"
 
 
-def read_site_info():
+def read_site_config():
     """
     Read site info from files in site_info_files to site_info_data
+
     :return: None
     """
-    if len(site_info_data) > 0:
+    if len(site_config_data) > 0:
         return
-    for filename in site_info_files:
-        yaml_url = urlopen(filename)
-        site_info = yaml.safe_load(yaml_url)
-        site_info_data.append(site_info)
+    config_dir = Path.home() / local_config_dir
+    if config_dir.exists():
+        read_local_site_config(config_dir)
+    else:
+        read_default_site_config()
+
+
+def read_default_site_config():
+    """
+    Read default site config from GitHub
+
+    :return:
+    """
+    site_config_data.clear()
+    for filename in default_site_configs:
+        yaml_file = urlopen(filename)
+        site_info = yaml.safe_load(yaml_file)
+        site_config_data.append(site_info)
+
+
+def read_local_site_config(config_dir):
+    """
+    Read site config from local directory
+
+    :param config_dir:
+    :return:
+    """
+    site_config_data.clear()
+    config_dir = Path(config_dir)
+    for f in config_dir.glob('*.yaml'):
+        yaml_file = f.open()
+        site_info = yaml.safe_load(yaml_file)
+        site_config_data.append(site_info)
+
+
+def save_site_config(config_dir):
+    """
+    Save site configs to local directory
+
+    :param config_dir: config directory
+    :return:
+    """
+    config_dir = Path(config_dir)
+    config_dir.mkdir(parents=True, exist_ok=True)
+    for site_info in site_config_data:
+        config_file = config_dir / (site_info["gocdb"] + ".yaml")
+        with config_file.open("w", encoding="utf-8") as f:
+            yaml.dump(site_info, f)
 
 
 def find_site_data(site_name):
     """
     Return endpoint of the correspondent site
+
     :param site_name:
     :return: endpoint
     """
-    read_site_info()
+    read_site_config()
 
-    for site_info in site_info_data:
+    for site_info in site_config_data:
         if site_info["gocdb"] == site_name:
             return site_info
     return None
@@ -63,6 +113,7 @@ def find_site_data(site_name):
 def find_endpoint_and_project_id(site_name, vo):
     """
     Return Keystone endpoint and project ID from site name and VO
+
     :param site_name:
     :param vo:
     :return: endpoint, project_id
@@ -86,8 +137,7 @@ def find_endpoint_and_project_id(site_name, vo):
 @click.group()
 def site():
     """
-    CLI site command group.  Execute "fedcloud site" to see more
-    :return:
+    CLI site command group.
     """
     pass
 
@@ -99,11 +149,9 @@ def site():
     required=True,
     default=lambda: os.environ.get("EGI_SITE", None),
 )
-def print_site(site):
+def show(site):
     """
     Print information about specified site
-    :param site:
-    :return: None
     """
     site_info = find_site_data(site)
     if site_info:
@@ -125,12 +173,9 @@ def print_site(site):
     required=True,
     default=lambda: os.environ.get("EGI_VO", None),
 )
-def print_project_id(site, vo):
+def show_project_id(site, vo):
     """
     CLI command for printing keystone URL and project ID of the VO on the site
-    :param site:
-    :param vo:
-    :return:
     """
     endpoint, project_id = find_endpoint_and_project_id(site, vo)
     if endpoint:
@@ -140,13 +185,32 @@ def print_project_id(site, vo):
 
 
 @site.command()
-def print_all():
+def show_all():
     """
     Print all site info
-    :return:
     """
-    if len(site_info_data) == 0:
-        read_site_info()
-    for site_info in site_info_data:
+    read_site_config()
+    for site_info in site_config_data:
         site_info_str = json.dumps(site_info, indent=2)
         print(site_info_str)
+
+
+@site.command()
+def save_config():
+    """
+    Save site config to local folder in home directory
+    """
+    read_site_config()
+    config_dir = Path.home() / local_config_dir
+    print("Saving site configs to directory %s" % config_dir)
+    save_site_config(config_dir)
+
+
+@site.command()
+def list():
+    """
+    List site IDs
+    """
+    read_site_config()
+    for site_info in site_config_data:
+        print(site_info["gocdb"])

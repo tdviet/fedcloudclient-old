@@ -8,12 +8,12 @@ RUN curl http://repository.egi.eu/sw/production/cas/1/current/repo-files/egi-tru
     && apt-get update \
     && apt-get install -y ca-policy-egi-core
 
-# egicli
-COPY . /tmp/egicli
-RUN pip install /tmp/egicli
+# FedCloud client
+COPY . /tmp/fedcloudclient
+RUN pip install /tmp/fedcloudclient
 
 # And fix the CAs
 RUN cat /etc/grid-security/certificates/*.pem >> $(python -m requests.certs) 
 
-CMD ["/usr/local/bin/egicli"]
+CMD ["/usr/local/bin/fedcloud"]
 

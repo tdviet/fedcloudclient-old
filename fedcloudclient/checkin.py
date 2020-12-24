@@ -81,7 +81,8 @@ def get_access_token(
 ):
     """
     Getting access token.
-    Generate new access token from refresh token (if given) or use existing value
+    Generate new access token from refresh token (if given) or use existing token
+    Check expiration time of access token
     Raise error if no valid token exists
     :param checkin_access_token:
     :param checkin_refresh_token:
@@ -105,12 +106,12 @@ def get_access_token(
         payload = jwt.decode(checkin_access_token, verify=False)
         expiration_timestamp = int(payload['exp'])
         current_timestamp = int(time.time())
-        if current_timestamp > expiration_timestamp + 10:
-            raise SystemExit("The give access token has expired.",
-                             "Getting new access token before continuing on operation")
+        if current_timestamp > expiration_timestamp - 10:
+            raise SystemExit("The given access token has expired." +
+                             " Getting new access token before continuing on operation")
         return checkin_access_token
     else:
-        raise SystemExit("Error: Either access token or refresh token + client ID",
+        raise SystemExit("Error: Either access token or refresh token + client ID" +
                          "+ client secret + Checkin URL are expected")
 
 
@@ -177,12 +178,7 @@ def refresh(
         checkin_url,
 ):
     """
-    CLI command for creating new access token
-    :param checkin_client_id:
-    :param checkin_client_secret:
-    :param checkin_refresh_token:
-    :param checkin_url:
-    :return:
+    CLI command for creating new access token from refresh token
     """
     output = token_refresh(
         checkin_client_id,
@@ -205,8 +201,6 @@ def check(
 ):
     """
     CLI command for printing validity of access token
-    :param checkin_access_token:
-    :return: None
     """
 
     if checkin_access_token is None:
@@ -258,13 +252,7 @@ def list_vos(
         checkin_url
 ):
     """
-    CLI command for listing VO memberships
-    :param checkin_client_id:
-    :param checkin_client_secret:
-    :param checkin_refresh_token:
-    :param checkin_access_token:
-    :param checkin_url:
-    :return: None
+    CLI command for listing VO memberships according to access token
     """
 
     checkin_access_token = get_access_token(
