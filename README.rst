@@ -84,7 +84,7 @@ More documentations will be available soon.
 FAQ
 ===
 
-1. The *fedcloud* client is very slow.
+1. The *fedcloud* client is slow.
 
  Execute command *"fedcloud site save-config"* to download site configurations from GitHub and save them on local machine.
  That will significantly speedup site configurations loading.
