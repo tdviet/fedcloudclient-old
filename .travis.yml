@@ -8,5 +8,5 @@ install:
   - pip install tox
 script:
   # First syntax, linting and pre-test stages
-  - mdl -s relaxed README.md
+  - mdl -s relaxed egicli_README.md
   - tox -e pep8,bandit

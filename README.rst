@@ -26,6 +26,9 @@ With *fedcloud* client:
 
 The full set of *openstack* client commands is described `here <https://docs.openstack.org/python-openstackclient/latest/cli/command-list.html>`_.
 
+Beside using as command-line client, fedcloud client can be used as development library for developers of tools and
+services for EGI Federated Cloud. See the demo code *demo.py* in */examples* to see how the library is used.
+
 Quick start
 ===========
 
@@ -38,7 +41,7 @@ Quick start
 - Get a new access token from Check-in according to instructions from
   FedCloud `Check-in client <https://aai.egi.eu/fedcloud/>`_.
 
-- Check the validity of the access token using *fedcloud* command:
+- Check the expiration time of the access token using *fedcloud* command:
 
 ::
 
@@ -105,7 +108,8 @@ FAQ
 
 1. The *fedcloud* client is slow.
 
- Execute command *"fedcloud site save-config"* to download site configurations from GitHub and save them on local machine.
+ Execute command *"fedcloud site save-config"* to download site configurations from `GitHub
+ <https://github.com/EGI-Foundation/fedcloud-catchall-operations/tree/master/sites>`_ and save them on local machine.
  That will significantly speedup site configurations loading.
 
 2. The *fedcloud* client fails with error message *"SSL exception connecting to https:// ..."* when attempts to
@@ -117,9 +121,11 @@ FAQ
 
 3. The *fedcloud* client fails with error message *"Site XX or VO YY not found"* but they do exist.
 
-  Site configurations may be incomplete. Check the site configurations stored in *~/.fedcloud-site-config/* if the VOs
-  are included. Execute *"fedcloud endpoint projects --site SITE --checkin-access-token ACCESS_TOKEN"* to find project
-  IDs and add the VOs to site configuration manually.
+  Site configurations at `GitHub <https://github.com/EGI-Foundation/fedcloud-catchall-operations/tree/master/sites>`_
+  may be incomplete. Check the site configurations stored in *~/.fedcloud-site-config/* if the VOs
+  are included. If not, you can ask site admins to fix site configuration. You can also execute
+  *"fedcloud endpoint projects --site SITE --checkin-access-token ACCESS_TOKEN"* to find project
+  IDs in the site and add the VOs to local site configuration on your machine manually.
 
 4. I would like to add supports for additional sites/VOs/identity providers that are not parts of EGI Federated Cloud.
 
@@ -128,15 +134,18 @@ FAQ
 
 5. Why there are options for both access token and refresh token? Which one should be used?
 
-  Refresh tokens have long lifetime (one year in EGI CheckIn), so they should be securely protected. If a refresh token
-  is given as parameter (together with client ID and client secret), an access token will be generated on the fly from
-  the refresh token.
+  Cloud operations need only access tokens, not refresh tokens. If a refresh token
+  is given as parameter to *fedcloud* client (together with client ID and client secret), an access token will be
+  generated on the fly from the refresh token and client ID/secret.
+
+  Refresh tokens have long lifetime (one year in EGI CheckIn), so they should be securely protected.
+  In secured environment, e.g. private computers, refresh tokens
+  may be permanently specified via environment variables *CHECKIN_REFRESH_TOKEN*, *CHECKIN_CLIENT_ID*,
+  *CHECKIN_CLIENT_SECRET*; so users don't have to set token for *fecloud* client via command-line parameters.
 
   Access tokens have short lifetime (one hour in EGI CheckIn), so they have lower security constraints. However, they
-  have to be refreshed frequently, that may be inconvenient for users. In shared environment, e.g. VMs in Cloud,
-  access tokens should be used instead of refreshed tokens. In secured environment (private machines), refresh tokens
-  may be permanently specified via environment variables *CHECKIN_REFRESH_TOKEN*, *CHECKIN_CLIENT_ID*,
-  *CHECKIN_CLIENT_SECRET*; so users don't have to set token as parameter for every execution.
+  have to be refreshed frequently, that may be inconvenient for some users. In shared environment, e.g. VMs in Cloud,
+  access tokens should be used instead of refreshed tokens.
 
 
 

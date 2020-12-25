@@ -82,7 +82,7 @@ def read_local_site_config(config_dir):
 
 def save_site_config(config_dir):
     """
-    Save site configs to local directory
+    Save site configs to local directory. Overwrite local configs if exist
 
     :param config_dir: config directory
     :return:
@@ -198,9 +198,10 @@ def show_all():
 @site.command()
 def save_config():
     """
-    Save site config to local folder in home directory
+    Read default site configs from GigHub and save them to local folder in home directory
+    Overwrite local configs if exist
     """
-    read_site_config()
+    read_default_site_config()
     config_dir = Path.home() / local_config_dir
     print("Saving site configs to directory %s" % config_dir)
     save_site_config(config_dir)

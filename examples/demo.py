@@ -18,14 +18,12 @@ vo = "fedcloud.egi.eu"
 # Openstack command and options. Must be a tuple
 command = ("image", "list", "--long")
 
+# Except for setting input, that is the only line of code needed
+# The result is stored in a JSON object for further processing
 
-
-# That is the only single call. The result is stored in a JSON object for further processing
 # ===============================================================
 error_code, result = fedcloud_openstack(token, site, vo, command)
 # ==============================================================
-
-
 
 # Check error code
 if error_code == 0:
