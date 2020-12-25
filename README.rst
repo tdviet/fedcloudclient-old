@@ -2,10 +2,29 @@
 FedCloud client:  Command-line client and library for EGI Federated Cloud
 =========================================================================
 
-*fedcloud* client is based on `egicli <https://github.com/EGI-Foundation/egicli>`_, a simple command line interface
+*fedcloud* command-line client is based on `egicli <https://github.com/EGI-Foundation/egicli>`_, a simple command-line interface
 and library for interacting with some of the services of EGI. The *fedcloud* command-line client extends the
 functionalities for interaction directly with Openstack sites in EGI Federated Cloud and perform commands on sites
-like the standard *openstack* client.
+in the same way as the local in-site *openstack* client.
+
+*fedcloud* client uses the same Openstack commands and options as *openstack* client. It uses site IDs and VOs for
+setting site/project that greatly improve user experiences and virtually makes EGI Federated Cloud look like single
+unified Cloud.
+
+Example of using *openstack* client for listing VMs in a project in a site:
+
+::
+
+    openstack server list -os-auth-url SITE_ENDPOINT --os-project-id PROJECT_ID -os-access-toke ACCESS_TOKEN
+    --os-auth-type v3oidcaccesstoken --os-protocol openid --os-identity-provider egi.eu
+
+With *fedcloud* client:
+
+::
+
+    fedcloud openstack server list --site SITE_ID --vo VO --checkin-access-token ACCESS_TOKEN
+
+The full set of *openstack* client commands is described `here <https://docs.openstack.org/python-openstackclient/latest/cli/command-list.html>`_.
 
 Quick start
 ===========
@@ -16,7 +35,7 @@ Quick start
 
    $ pip install fedcloudclient
 
-- Get a refreshed access token from Check-in according to instructions from
+- Get a new access token from Check-in according to instructions from
   FedCloud `Check-in client <https://aai.egi.eu/fedcloud/>`_.
 
 - Check the validity of the access token using *fedcloud* command:
@@ -46,11 +65,11 @@ Quick start
 
     $ fedcloud site save-config
 
-- List VMs in fedcloud.egi.eu VO on CESNET-MCC site:
+- List VMs in fedcloud.egi.eu VO on CYFRONET-CLOUD site (or other combination of site and VO you have access):
 
 ::
 
-    $ fedcloud openstack server list --site CESNET-MCC --vo fedcloud.egi.eu --checkin-access-token ACCESS_TOKEN
+    $ fedcloud openstack server list --site CYFRONET-CLOUD --vo fedcloud.egi.eu --checkin-access-token ACCESS_TOKEN
 
 - Learn more commands of *fedcloud* client and experiment with them:
 
@@ -71,7 +90,7 @@ services for EGI Federated Cloud. For example, performing openstack command as a
 
 ::
 
-    from fedcloudclient import fedcloud_openstack
+    from fedcloudclient.openstack import fedcloud_openstack
     ....
     json_object = fedcloud_openstack(
         checkin_access_token,
@@ -79,7 +98,7 @@ services for EGI Federated Cloud. For example, performing openstack command as a
         vo,
         openstack_command)
 
-More documentations will be available soon.
+See a working example *"demo.py"* in */examples*. More documentations will be available soon.
 
 FAQ
 ===
@@ -110,13 +129,14 @@ FAQ
 5. Why there are options for both access token and refresh token? Which one should be used?
 
   Refresh tokens have long lifetime (one year in EGI CheckIn), so they should be securely protected. If a refresh token
-  is given (together with client ID and client secret), an access token will be generated on the fly.
+  is given as parameter (together with client ID and client secret), an access token will be generated on the fly from
+  the refresh token.
 
   Access tokens have short lifetime (one hour in EGI CheckIn), so they have lower security constraints. However, they
   have to be refreshed frequently, that may be inconvenient for users. In shared environment, e.g. VMs in Cloud,
   access tokens should be used instead of refreshed tokens. In secured environment (private machines), refresh tokens
   may be permanently specified via environment variables *CHECKIN_REFRESH_TOKEN*, *CHECKIN_CLIENT_ID*,
-  *CHECKIN_CLIENT_SECRET*; so users don't have to specify them at every execution.
+  *CHECKIN_CLIENT_SECRET*; so users don't have to set token as parameter for every execution.
 
 
 

@@ -76,7 +76,12 @@ def fedcloud_openstack_full(
 
     if error_code == 0:
         if json_output:
-            return error_code, json.loads(result.getvalue())
+            # Test if openstack command ignore JSON format option
+            try:
+                json_object = json.loads(result.getvalue())
+                return error_code, json_object
+            except ValueError as e:
+                return error_code, result.getvalue()
         else:
             return error_code, result.getvalue()
     else:
