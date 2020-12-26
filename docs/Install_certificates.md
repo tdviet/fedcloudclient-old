@@ -1,3 +1,7 @@
+# Installing certificates 
+
+## For production environment
+
 If you don’t have the CA certificates installed in your machine, you can get them from
 the [UMD EGI core Trust Anchor Distribution](http://repository.egi.eu/?category_name=cas)
 
@@ -28,3 +32,9 @@ Otherwise, you are using internal requests bundle, which can be augmented with t
 ```
 cat /etc/grid-security/certificates/*.pem >> $(python -m requests.certs)
 ```
+
+## For testing in Python virtual environment
+
+For quick tests in Python virtual environment, where users do not want (or not have root access) to install 
+certificates via apt/yum, users can try to download and import the bundle certificate from this 
+[GitHub repository](https://github.com/tdviet/python-requests-bundle-certs)

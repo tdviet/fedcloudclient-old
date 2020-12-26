@@ -39,7 +39,7 @@ local_config_dir = ".fedcloud-site-config/"
 
 def read_site_config():
     """
-    Read site info from files in site_info_files to site_info_data
+    Read site info from local dir if exist, otherwise from default GitHub location
 
     :return: None
     """

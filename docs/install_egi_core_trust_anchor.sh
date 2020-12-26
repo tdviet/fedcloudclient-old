@@ -1,4 +1,4 @@
-@!/bin/bash
+#!/bin/bash
 
 # Install EGI Core Trust Anchor
 curl http://repository.egi.eu/sw/production/cas/1/current/repo-files/egi-trustanchors.list \
@@ -10,4 +10,4 @@ curl http://repository.egi.eu/sw/production/cas/1/current/repo-files/egi-trustan
 
 
 # And add the certificates to Python requests bundle
-RUN cat /etc/grid-security/certificates/*.pem >> $(python -m requests.certs)
+cat /etc/grid-security/certificates/*.pem >> $(python -m requests.certs)

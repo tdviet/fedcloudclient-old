@@ -41,8 +41,10 @@ Quick start
 
     $ pip install fedcloudclient
 
--   Get a new access token from Check-in according to instructions from
+-   Get a new access token from EGI Check-in according to instructions from
     FedCloud [Check-in client](https://aai.egi.eu/fedcloud/).
+    
+
 -   Check the expiration time of the access token using *fedcloud*
     command:
 
@@ -117,25 +119,29 @@ FAQ
 
 > Execute command *"fedcloud site save-config"* to download site
 > configurations from
-> [GitHub](https://github.com/EGI-Foundation/fedcloud-catchall-operations/tree/master/sites)
-> and save them on local machine. That will significantly speedup site
+> [GitHub repository](https://github.com/EGI-Foundation/fedcloud-catchall-operations/tree/master/sites)
+> and save them on a local machine. That will significantly speedup site
 > configurations loading.
 
-1.  The *fedcloud* client fails with error message *"SSL exception
+2.  The *fedcloud* client fails with error message *"SSL exception
     connecting to <https://> ..."* when attempts to interact with some
     sites.
 
 > Some sites use certificates issued by national grid CAs that are not
 > included in default distribution, so *fedcloud* client cannot verify
-> them. Follow instructions in documentation to install [EGI Core Trust
+> them. Follow instructions in the documentation to install [EGI Core Trust
 > Anchor](http://repository.egi.eu/category/production/cas/) and add
 > certificates to Python request certificate bundle.
+> 
+> In the case of using virtual environment for quick test, you can download 
+> and import bundle certificates by using
+> the script from [this repository](ttps://github.com/tdviet/python-requests-bundle-certs)
 
-1.  The *fedcloud* client fails with error message *"Site XX or VO YY
+3.  The *fedcloud* client fails with error message *"Site XX or VO YY
     not found"* but they do exist.
 
 > Site configurations at
-> [GitHub](https://github.com/EGI-Foundation/fedcloud-catchall-operations/tree/master/sites)
+> [GitHub repository](https://github.com/EGI-Foundation/fedcloud-catchall-operations/tree/master/sites)
 > may be incomplete. Check the site configurations stored in
 > *\~/.fedcloud-site-config/* if the VOs are included. If not, you can
 > ask site admins to fix site configuration. You can also execute
@@ -143,14 +149,14 @@ FAQ
 > ACCESS\_TOKEN"* to find project IDs in the site and add the VOs to
 > local site configuration on your machine manually.
 
-1.  I would like to add supports for additional sites/VOs/identity
+4.  I would like to add supports for additional sites/VOs/identity
     providers that are not parts of EGI Federated Cloud.
 
 > Other identity providers may be specified via option *"--checkin-url"*
 > or environment variable *"CHECKIN\_OIDC\_URL"*. Additional sites and
 > VOs may be added to local site configuration files.
 
-1.  Why there are options for both access token and refresh token? Which
+5.  Why there are options for both access token and refresh token? Which
     one should be used?
 
 > Cloud operations need only access tokens, not refresh tokens. If a
@@ -160,7 +166,7 @@ FAQ
 >
 > Refresh tokens have long lifetime (one year in EGI CheckIn), so they
 > should be securely protected. In secured environment, e.g. private
-> computers, refresh tokens may be permanently specified via environment
+> computers, refresh tokens may be conveniently specified via environment
 > variables *CHECKIN\_REFRESH\_TOKEN*, *CHECKIN\_CLIENT\_ID*,
 > *CHECKIN\_CLIENT\_SECRET*; so users don't have to set token for
 > *fecloud* client via command-line parameters.
