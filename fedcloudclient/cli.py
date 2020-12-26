@@ -1,6 +1,6 @@
 import click
-from fedcloudclient.sites import site
 
+from fedcloudclient.sites import site
 from fedcloudclient.checkin import token
 from fedcloudclient.endpoint import endpoint
 from fedcloudclient.openstack import openstack
