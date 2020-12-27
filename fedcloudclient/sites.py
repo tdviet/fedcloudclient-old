@@ -70,7 +70,7 @@ def read_local_site_config(config_dir):
     Read site config from local directory
 
     :param config_dir:
-    :return:
+    :return: None
     """
     site_config_data.clear()
     config_dir = Path(config_dir)
@@ -85,7 +85,7 @@ def save_site_config(config_dir):
     Save site configs to local directory. Overwrite local configs if exist
 
     :param config_dir: config directory
-    :return:
+    :return: None
     """
     config_dir = Path(config_dir)
     config_dir.mkdir(parents=True, exist_ok=True)
@@ -93,6 +93,18 @@ def save_site_config(config_dir):
         config_file = config_dir / (site_info["gocdb"] + ".yaml")
         with config_file.open("w", encoding="utf-8") as f:
             yaml.dump(site_info, f)
+
+def list_sites():
+    """
+    List of all sites from config
+
+    :return: list of site IDs
+    """
+    read_site_config()
+    result = []
+    for site_info in site_config_data:
+        result.append(site_info["gocdb"])
+    return result
 
 
 def find_site_data(site_name):

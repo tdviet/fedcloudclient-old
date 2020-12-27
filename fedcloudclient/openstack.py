@@ -7,7 +7,7 @@ import sys
 import openstackclient.shell
 
 from fedcloudclient.checkin import get_access_token
-from fedcloudclient.sites import find_endpoint_and_project_id
+from fedcloudclient.sites import find_endpoint_and_project_id, list_sites
 
 DEFAULT_PROTOCOL = "openid"
 DEFAULT_AUTH_TYPE = "v3oidcaccesstoken"
@@ -42,7 +42,7 @@ def fedcloud_openstack_full(
 
     endpoint, project_id = find_endpoint_and_project_id(site, vo)
     if endpoint is None:
-        return 1, ("Site %s or VO %s not found" % (site, vo))
+        return 1, ("VO %s not found on site %s" % (vo, site))
 
     options = ("--os-auth-url", endpoint,
                "--os-auth-type", checkin_auth_type,
@@ -183,16 +183,21 @@ def openstack(
                                     checkin_client_secret,
                                     checkin_url)
 
-    error_code, result = fedcloud_openstack(
-        access_token,
-        site,
-        vo,
-        openstack_command,
-        False  # No JSON output in shell mode
-    )
-
-    if error_code != 0:
-        print("Error code: ", error_code)
-        print("Error message: ", result)
+    if site == "ALL_SITES":
+        sites = list_sites()
     else:
-        print(result)
+        sites = [site]
+    for current_site in sites:
+        error_code, result = fedcloud_openstack(
+            access_token,
+            current_site,
+            vo,
+            openstack_command,
+            False  # No JSON output in shell mode
+        )
+        print("Site: %s, VO: %s" % (current_site, vo))
+        if error_code != 0:
+            print("Error code: ", error_code)
+            print("Error message: ", result)
+        else:
+            print(result)

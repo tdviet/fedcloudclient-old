@@ -39,7 +39,13 @@ Quick start
 
 <!-- -->
 
-    $ pip install fedcloudclient
+    $ pip3 install fedcloudclient
+
+or use Docker container:
+
+<!-- -->
+
+    $ docker run -it  tdviet/fedcloudclient bash
 
 -   Get a new access token from EGI Check-in according to instructions from
     FedCloud [Check-in client](https://aai.egi.eu/fedcloud/).
@@ -50,17 +56,17 @@ Quick start
 
 <!-- -->
 
-    $ fedcloud token check --checkin-access-token ACCESS_TOKEN
+    $ fedcloud token check --checkin-access-token <ACCESS_TOKEN>
 
 -   List the VO memberships of the access token:
 
 <!-- -->
 
-    $ fedcloud token list-vos --checkin-access-token ACCESS_TOKEN
+    $ fedcloud token list-vos --checkin-access-token <ACCESS_TOKEN>
 
 -   List the Openstack sites available in EGI Federated Cloud. That may
     take few seconds because all site configurations are retrieved from
-    GitHub.
+    [GitHub repository](https://github.com/EGI-Foundation/fedcloud-catchall-operations/tree/master/sites)
 
 <!-- -->
 
@@ -74,23 +80,34 @@ Quick start
 
     $ fedcloud site save-config
 
--   List VMs in fedcloud.egi.eu VO on CYFRONET-CLOUD site (or other
+-   Perform an Openstack command, e.g. list images in fedcloud.egi.eu VO on CYFRONET-CLOUD site (or other
     combination of site and VO you have access):
 
 <!-- -->
 
-    $ fedcloud openstack server list --site CYFRONET-CLOUD --vo fedcloud.egi.eu --checkin-access-token ACCESS_TOKEN
+    $ fedcloud openstack image list --site CYFRONET-CLOUD --vo fedcloud.egi.eu --checkin-access-token <ACCESS_TOKEN>
+
+-   Set environment variable for access token, so you don't have to specify access token again and again. 
+    The commands are much simpler now:
+
+<!-- -->
+
+    $ export CHECKIN_ACCESS_TOKEN=<ACCESS_TOKEN>
+
+    $ fedcloud token check
+
+    $ fedcloud openstack image list --site CYFRONET-CLOUD --vo fedcloud.egi.eu
 
 -   Learn more commands of *fedcloud* client and experiment with them:
 
 <!-- -->
 
     $ fedcloud --help
-    $ fedcloud openstack --help
+
     $ fedcloud site --help
 
 -   Experiment with more Openstack commands, e.g. *"fedcloud openstack
-    image list"*. The full list of Openstack commands are available
+    server list"*. The full list of Openstack commands are available
     [here](https://docs.openstack.org/python-openstackclient/latest/cli/command-list.html).
 
 Using fedcloudclient as development library
@@ -109,8 +126,8 @@ Python:
         vo,
         openstack_command)
 
-See a working example *"demo.py"* in */examples*. More documentations
-will be available soon.
+See a working example [*"demo.py"*](https://github.com/tdviet/fedcloudclient/blob/fedcloud-client/examples/demo.py). 
+More documentations will be available soon.
 
 FAQ
 ---

@@ -103,7 +103,7 @@ def get_access_token(
             checkin_url)["access_token"]
     elif checkin_access_token:
 
-        # Check validity of access token
+        # Check expiration time of access token
         payload = jwt.decode(checkin_access_token, verify=False)
         expiration_timestamp = int(payload['exp'])
         current_timestamp = int(time.time())
