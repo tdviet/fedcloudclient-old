@@ -14,6 +14,7 @@ import requests
 def oidc_discover(checkin_url):
     """
     Discover oidc endpoints
+
     :param checkin_url: CheckIn URL
     :return: JSON object of OIDC configuration
     """
@@ -27,6 +28,7 @@ def token_refresh(
 ):
     """
     Helper function for retrieving JSON object with access token
+
     :param checkin_client_id:
     :param checkin_client_secret:
     :param checkin_refresh_token:
@@ -58,6 +60,7 @@ def refresh_access_token(
 ):
     """
     Retrieve access token in plain text (string)
+
     :param checkin_client_id:
     :param checkin_client_secret:
     :param checkin_refresh_token:
@@ -84,6 +87,7 @@ def get_access_token(
     Generate new access token from refresh token (if given) or use existing token
     Check expiration time of access token
     Raise error if no valid token exists
+
     :param checkin_access_token:
     :param checkin_refresh_token:
     :param checkin_client_id:
@@ -119,6 +123,7 @@ def get_access_token(
 def token_list_vos(checkin_access_token, checkin_url):
     """
     List VO memberships in EGI CheckIn
+
     :param checkin_access_token:
     :param checkin_url:
     :return: list of VO names
@@ -142,7 +147,6 @@ def token_list_vos(checkin_access_token, checkin_url):
 def token():
     """
     CLI token command group. Execute "fedcloud token" to see more
-    :return:
     """
     pass
 

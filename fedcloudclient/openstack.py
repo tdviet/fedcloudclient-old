@@ -14,9 +14,6 @@ DEFAULT_AUTH_TYPE = "v3oidcaccesstoken"
 DEFAULT_IDENTITY_PROVIDER = "egi.eu"
 
 
-# Full version of fedcloud_openstack() function, including support
-# for other identity providers
-
 def fedcloud_openstack_full(
         checkin_access_token,
         checkin_protocol,
@@ -28,16 +25,19 @@ def fedcloud_openstack_full(
         json_output=True
 ):
     """
-    Calling openstack client with full options specified
-    :param checkin_access_token:
-    :param checkin_protocol:
-    :param checkin_auth_type:
-    :param checkin_identity_provider:
-    :param site:
-    :param vo:
-    :param openstack_command:
-    :param json_output:
-    :return:
+    Calling openstack client with full options specified, including support
+    for other identity providers and protocols
+
+    :param checkin_access_token: Checkin access token. Passed to openstack client as --os-access-token
+    :param checkin_protocol: Checkin protocol (openid, oidc). Passed to openstack client as --os-protocol
+    :param checkin_auth_type: Checkin authentication type (v3oidcaccesstoken). Passed to openstack client as --os-auth-type
+    :param checkin_identity_provider: Checkin identity provider in mapping (egi.eu). Passed to openstack client as --os-identity-provider
+    :param site: site ID in GOCDB
+    :param vo: VO name
+    :param openstack_command: Openstack command in tuple, e.g. ("image", "list", "--long")
+    :param json_output: if result is JSON object or string. Default:True
+
+    :return: error code, result or error message
     """
 
     endpoint, project_id = find_endpoint_and_project_id(site, vo)
@@ -89,9 +89,6 @@ def fedcloud_openstack_full(
         return error_code, error.getvalue()
 
 
-# Simplified version of fedcloud_openstack() function using
-# default EGI setting for identity provider and protocols
-
 def fedcloud_openstack(
         checkin_access_token,
         site,
@@ -100,13 +97,17 @@ def fedcloud_openstack(
         json_format=True
 ):
     """
+    Simplified version of fedcloud_openstack_full() function using
+    default EGI setting for identity provider and protocols
     Call openstack client with default options for EGI Checkin
-    :param checkin_access_token:
-    :param site:
-    :param vo:
-    :param openstack_command:
-    :param json_format:
-    :return:
+
+    :param checkin_access_token: Checkin access token. Passed to openstack client as --os-access-token
+    :param site: site ID in GOCDB
+    :param vo: VO name
+    :param openstack_command: Openstack command in tuple, e.g. ("image", "list", "--long")
+    :param json_output: if result is JSON object or string. Default:True
+
+    :return: error code, result or error message
     """
 
     return fedcloud_openstack_full(
@@ -174,7 +175,7 @@ def openstack(
         openstack_command
 ):
     """
-    CLI function for calling openstack client
+    Calling openstack client with access token, site ID, VO name and openstack command
     """
 
     access_token = get_access_token(checkin_access_token,

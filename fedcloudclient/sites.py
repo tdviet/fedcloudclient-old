@@ -39,7 +39,9 @@ local_config_dir = ".fedcloud-site-config/"
 
 def read_site_config():
     """
-    Read site info from local dir if exist, otherwise from default GitHub location
+    Read site info from local config dir if exist, otherwise from default GitHub location. Storing
+    site configuration in global variable, that will be used by other functions. Call read_local_site_config()
+    or read_default_site_config()
 
     :return: None
     """
@@ -54,9 +56,10 @@ def read_site_config():
 
 def read_default_site_config():
     """
-    Read default site config from GitHub
+    Read default site config from GitHub.  Storing
+    site configuration in global variable, that will be used by other functions
 
-    :return:
+    :return: None
     """
     site_config_data.clear()
     for filename in default_site_configs:
@@ -67,9 +70,11 @@ def read_default_site_config():
 
 def read_local_site_config(config_dir):
     """
-    Read site config from local directory
+    Read site config from local directory specified in config_dir. Storing
+    site configuration in global variable, that will be used by other functions
 
-    :param config_dir:
+    :param config_dir: path to directory containing site configuration
+
     :return: None
     """
     site_config_data.clear()
@@ -82,9 +87,10 @@ def read_local_site_config(config_dir):
 
 def save_site_config(config_dir):
     """
-    Save site configs to local directory. Overwrite local configs if exist
+    Save site configs to local directory specified in config_dir. Overwrite local configs if exist
 
-    :param config_dir: config directory
+    :param config_dir: path to directory containing site configuration
+
     :return: None
     """
     config_dir = Path(config_dir)
@@ -96,7 +102,7 @@ def save_site_config(config_dir):
 
 def list_sites():
     """
-    List of all sites from config
+    List of all sites IDs in site configuration
 
     :return: list of site IDs
     """
@@ -109,10 +115,10 @@ def list_sites():
 
 def find_site_data(site_name):
     """
-    Return endpoint of the correspondent site
+    Return Keystone endpoint of the correspondent site with site_name
 
-    :param site_name:
-    :return: endpoint
+    :param site_name: site ID in GOCDB
+    :return: endpoint of site if found, otherwise None
     """
     read_site_config()
 
@@ -124,11 +130,12 @@ def find_site_data(site_name):
 
 def find_endpoint_and_project_id(site_name, vo):
     """
-    Return Keystone endpoint and project ID from site name and VO
+    Return Keystone endpoint and project ID from site name and VO according to site configuration
 
-    :param site_name:
-    :param vo:
-    :return: endpoint, project_id
+    :param site_name: site ID in GOCDB
+    :param vo: VO name
+
+    :return: endpoint, project_id if the VO exist on the site, otherwise None, None
     """
     site_info = find_site_data(site_name)
     if site_info is None:
@@ -163,7 +170,7 @@ def site():
 )
 def show(site):
     """
-    Print information about specified site
+    Print configuration of the specified site
     """
     site_info = find_site_data(site)
     if site_info:
@@ -187,7 +194,7 @@ def show(site):
 )
 def show_project_id(site, vo):
     """
-    CLI command for printing keystone URL and project ID of the VO on the site
+    Printing Keystone endpoint and project ID of the VO on the site
     """
     endpoint, project_id = find_endpoint_and_project_id(site, vo)
     if endpoint:
@@ -199,7 +206,7 @@ def show_project_id(site, vo):
 @site.command()
 def show_all():
     """
-    Print all site info
+    Print all site configuration
     """
     read_site_config()
     for site_info in site_config_data:

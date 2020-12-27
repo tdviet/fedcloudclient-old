@@ -154,8 +154,7 @@ FAQ
 > and import bundle certificates by using
 > the script from [this repository](ttps://github.com/tdviet/python-requests-bundle-certs)
 
-3.  The *fedcloud* client fails with error message *"Site XX or VO YY
-    not found"* but they do exist.
+3.  The *fedcloud* client fails with error message *"VO XX not found on site YY"* but they do exist.
 
 > Site configurations at
 > [GitHub repository](https://github.com/EGI-Foundation/fedcloud-catchall-operations/tree/master/sites)
@@ -163,7 +162,7 @@ FAQ
 > *\~/.fedcloud-site-config/* if the VOs are included. If not, you can
 > ask site admins to fix site configuration. You can also execute
 > *"fedcloud endpoint projects --site SITE --checkin-access-token
-> ACCESS\_TOKEN"* to find project IDs in the site and add the VOs to
+> ACCESS\_TOKEN"* to find project IDs of the VOs on the site and add the VOs to
 > local site configuration on your machine manually.
 
 4.  I would like to add supports for additional sites/VOs/identity

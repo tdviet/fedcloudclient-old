@@ -5,11 +5,9 @@ from fedcloudclient.checkin import token
 from fedcloudclient.endpoint import endpoint
 from fedcloudclient.openstack import openstack
 
-
 @click.group()
 def cli():
     pass
-
 
 cli.add_command(token)
 cli.add_command(endpoint)

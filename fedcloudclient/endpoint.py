@@ -70,6 +70,11 @@ configure front (
 
 
 def get_sites():
+    """
+    Get list of sites (using GOCDB instead of site configuration)
+
+    :return: list of site IDs
+    """
     q = {"method": "get_site_list", "certification_status": "Certified"}
     url = "?".join([GOCDB_PUBLICURL, parse.urlencode(q)])
     r = requests.get(url)
@@ -86,6 +91,16 @@ def get_sites():
 
 
 def find_endpoint(service_type, production=True, monitored=True, site=None):
+    """
+    Searching GOCDB for endpoints according to service types and status
+
+    :param service_type:
+    :param production:
+    :param monitored:
+    :param site: list of sites, None for searching all sites
+
+    :return: list of endpoints
+    """
     q = {"method": "get_service_endpoint", "service_type": service_type}
     if monitored:
         q["monitored"] = "Y"
@@ -120,6 +135,9 @@ def find_endpoint(service_type, production=True, monitored=True, site=None):
 
 
 def get_keystone_url(os_auth_url, path):
+    """
+    Helper function for fixing keystone URL
+    """
     url = parse.urlparse(os_auth_url)
     prefix = url.path.rstrip("/")
     if prefix.endswith("v2.0") or prefix.endswith("v3"):
@@ -129,7 +147,9 @@ def get_keystone_url(os_auth_url, path):
 
 
 def get_unscoped_token(os_auth_url, access_token):
-    """Get an unscoped token, trying various protocol names if needed"""
+    """
+    Get an unscoped token, trying various protocol names if needed
+    """
     protocols = ["openid", "oidc"]
     for p in protocols:
         try:
@@ -141,6 +161,9 @@ def get_unscoped_token(os_auth_url, access_token):
 
 
 def get_scoped_token(os_auth_url, access_token, project_id):
+    """
+    Get a scoped token, trying various protocol names if needed
+    """
     unscoped_token, protocol = get_unscoped_token(os_auth_url, access_token)
     url = get_keystone_url(os_auth_url, "/v3/auth/tokens")
     body = {
@@ -157,7 +180,9 @@ def get_scoped_token(os_auth_url, access_token, project_id):
 
 
 def retrieve_unscoped_token(os_auth_url, access_token, protocol="openid"):
-    """Request an unscoped token"""
+    """
+    Request an unscoped token
+    """
     url = get_keystone_url(
         os_auth_url,
         "/v3/OS-FEDERATION/identity_providers/egi.eu/protocols/%s/auth" % protocol,
@@ -170,6 +195,9 @@ def retrieve_unscoped_token(os_auth_url, access_token, protocol="openid"):
 
 
 def get_projects(os_auth_url, unscoped_token):
+    """
+    Get list of projects from unscoped token
+    """
     url = get_keystone_url(os_auth_url, "/v3/auth/projects")
     r = requests.get(url, headers={"X-Auth-Token": unscoped_token})
     r.raise_for_status()
@@ -179,9 +207,6 @@ def get_projects(os_auth_url, unscoped_token):
 def get_projects_from_sites(access_token, site):
     """
     Get all projects from sites using access token
-    :param access_token:
-    :param site:
-    :return: List of projects
     """
     project_list = []
     for ep in find_endpoint("org.openstack.nova", site=site):
@@ -198,12 +223,8 @@ def get_projects_from_sites(access_token, site):
 
 def get_project_id_from_vo_site(access_token, vo, site):
     """
-    WARNING: Deprecated in favor of new functions in sites.py
-    Get project ID from site according to VO name
-    :param access_token:
-    :param vo:
-    :param site:
-    :return: project ID
+    Deprecated in favor of new functions in sites.py
+    Get project ID from site ID and VO name
     """
     if site is None:
         return None
@@ -220,7 +241,6 @@ def get_project_id_from_vo_site(access_token, vo, site):
 def endpoint():
     """
     CLI endpoint command group.
-    :return:
     """
     pass
 
@@ -266,7 +286,7 @@ def projects(
         site
 ):
     """
-    CLI command for list of all project from specific site/sites
+    List of all project from specific site/sites
     """
     access_token = get_access_token(checkin_access_token,
                                     checkin_refresh_token,
@@ -582,7 +602,7 @@ def env(
         site,
 ):
     """
-    CLI commnand for generating environment variables for specific project/site
+    Generating OS environment variables for specific project/site
     """
     access_token = get_access_token(checkin_access_token,
                                     checkin_refresh_token,
