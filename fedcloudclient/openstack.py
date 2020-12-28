@@ -8,6 +8,8 @@ import openstackclient.shell
 
 from fedcloudclient.checkin import get_access_token
 from fedcloudclient.sites import find_endpoint_and_project_id, list_sites
+from importlib import reload
+
 
 DEFAULT_PROTOCOL = "openid"
 DEFAULT_AUTH_TYPE = "v3oidcaccesstoken"
@@ -71,6 +73,7 @@ def fedcloud_openstack_full(
     sys.stderr = error
 
     # Calling openstack client
+    reload(openstackclient.shell)
     error_code = openstackclient.shell.main(openstack_command + options)
 
     sys.stdout.flush()
