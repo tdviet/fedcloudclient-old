@@ -124,7 +124,7 @@ def fedcloud_openstack(
     :return: error code, result or error message
     """
 
-    return fedcloud_openstack_full(
+    error, result = fedcloud_openstack_full(
         checkin_access_token,
         DEFAULT_PROTOCOL,
         DEFAULT_AUTH_TYPE,
@@ -134,6 +134,8 @@ def fedcloud_openstack(
         openstack_command,
         json_format
     )
+    return error, result
+
 
 
 @click.command(context_settings={"ignore_unknown_options": True})
