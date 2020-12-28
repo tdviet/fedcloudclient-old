@@ -1,8 +1,5 @@
-fedcloudclient package
-======================
-
-Submodules
-----------
+fedcloudclient API references
+=============================
 
 fedcloudclient.checkin module
 -----------------------------

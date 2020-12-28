@@ -10,3 +10,6 @@ getting tokens, ``fedcloudclient.endpoint`` for searching endpoints via GOCDB, g
 Keystone, ``fedcloudclient.sites`` manages site configuration and finally ``fedcloudclient.openstack`` for
 performing Openstack operations.
 
+See `Quick start<https://github.com/tdviet/fedcloudclient#quick-start>`_ for instruction how to install and use
+``fedcloud`` command-line client and ``fedcloudclient` package.
+
