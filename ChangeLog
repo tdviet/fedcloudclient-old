@@ -1,21 +1,49 @@
-Version 0.0.1
+CHANGES
+=======
 
-Major changes
-- Add openstack client command
-- Add support for access token instead of refresh token. Now users can choose
-    whether to use access token or refresh token
-- Rename package to egi-fedcloud-client
-- Rename CLI command to fedcloud
-- Add command "token check" for checking validity of access token
-- Split list-vos to separate command "token list-vos" from "token refresh"
-- Split functionalities to frontend and backend function. Backend functions have no output
-except for returned values, and so can be used as libraries for other projects
+* - Flushing stdio and stderr
+* - Flushing stdio and stderr
+* - Flushing stdio and stderr
+* - Flushing stdio and stderr
+* - Fixing mistypes in endpoint.py
+* - Fixing mistypes in endpoint.py
+* - Update documentation
+* - Update documentation
+* - Update documentation
+* - Update documentation
+* - Update documentation
+* Update conf.py
+* - Add docstrings for generating API documentation
+* - Add docstrings for generating API documentation
+* - Add docstrings for generating API documentation
+* - Add ALL\_SITES option
+* revert debug options
+* revert debug options
+* - Improve documentation - Add debugging options
+* Update setup.cfg to use markdown
+* Version 0.0.7 - Improve README.rst - Add demo code of using fedcloudclient as library
+* Version 0.0.7 - Improve README.rst - Add demo code of using fedcloudclient as library
+* Version 0.0.5 - Improve README.rst - Add demo code of using fedcloudclient as library
+* Version 0.0.4 - Improve README.rst
+* Version 0.0.4 - Improve README.rst
+* Version 0.0.4 - Improve README.rst
+* Version 0.0.3 - Save site configs to local dir - Rename package to fedcloudclient - Create new README.rst
+* Version 0.0.2
+* Version 0.0.2
+* Major changes - Add openstack client command - Add support for access token instead of refresh token. Now users can choose     whether to use access token or refresh token - Rename package to egi-fedcloud-client - Rename CLI command to fedcloud - Add command "token check" for checking validity of access token - Split list-vos to separate command "token list-vos" from "token refresh"
 
-Minor changes
-- Refactoring checkin.py and endpoint.py
+v0.0.1
+------
 
-Version 0.0.2
-- Add sites.py read site info from github
--
+* Initial changes for adding openstack commands
+* Initial changes for adding openstack commands
 
+0.1
+---
 
+* Ec3 (#17)
+* Fix typo in "--not-production" flag (#14)
+* Changed requests.post data type adrgument (#8)
+* Fix for env var usage on endpoint commands (#6)
+* Initial commit (#1)
+* Initial commit

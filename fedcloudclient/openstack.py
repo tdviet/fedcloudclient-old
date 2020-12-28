@@ -8,7 +8,7 @@ import openstackclient.shell
 
 from fedcloudclient.checkin import get_access_token
 from fedcloudclient.sites import find_endpoint_and_project_id, list_sites
-from importlib import reload
+import subprocess
 
 
 DEFAULT_PROTOCOL = "openid"
@@ -62,31 +62,12 @@ def fedcloud_openstack_full(
 
     # Redirecting stdout and stderr from openstack client
     # to result and error string
-    old_stdout = sys.stdout
-    sys.stdout.flush()
-    result = StringIO()
-    sys.stdout = result
 
-    old_stderr = sys.stderr
-    sys.stderr.flush()
-    error = StringIO()
-    sys.stderr = error
+    completed  = subprocess.run(("openstack",) +openstack_command + options, capture_output=True)
 
-    # Calling openstack client
-    reload(openstackclient.shell)
-    error_code = openstackclient.shell.main(openstack_command + options)
-
-    sys.stdout.flush()
-    sys.stdout = old_stdout
-    sys.stderr.flush()
-    sys.stderr = old_stderr
-
-    error_message = error.getvalue()
-    error.close()
-    error = None
-    result_str = result.getvalue()
-    result.close()
-    result = None
+    error_code = completed.returncode
+    error_message = completed.stderr.decode('utf-8')
+    result_str = completed.stdout.decode('utf-8')
 
     if error_code == 0:
         if json_output:
@@ -124,7 +105,7 @@ def fedcloud_openstack(
     :return: error code, result or error message
     """
 
-    error, result = fedcloud_openstack_full(
+    return fedcloud_openstack_full(
         checkin_access_token,
         DEFAULT_PROTOCOL,
         DEFAULT_AUTH_TYPE,
@@ -134,7 +115,6 @@ def fedcloud_openstack(
         openstack_command,
         json_format
     )
-    return error, result
 
 
 
@@ -205,8 +185,6 @@ def openstack(
     else:
         sites = [site]
     for current_site in sites:
-        result = None
-        error_code = None
         error_code, result = fedcloud_openstack(
             access_token,
             current_site,
@@ -218,7 +196,5 @@ def openstack(
         if error_code != 0:
             print("Error code: ", error_code)
             print("Error message: ", result)
-            result = None
         else:
             print(result)
-            result = None
