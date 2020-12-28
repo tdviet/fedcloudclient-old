@@ -264,7 +264,7 @@ def endpoint():
 @click.option(
     "--checkin-access-token",
     help="Check-in access token",
-    default=lambda: os.environ.get("CHECKIN_REFRESH_TOKEN", None),
+    default=lambda: os.environ.get("CHECKIN_ACCESS_TOKEN", None),
 )
 @click.option(
     "--checkin-url",
@@ -326,7 +326,10 @@ def projects(
     default=lambda: os.environ.get("CHECKIN_OIDC_URL", "https://aai.egi.eu/oidc"),
 )
 @click.option(
-    "--site", help="Name of the site", default=lambda: os.environ.get("EGI_SITE", None)
+    "--site",
+    help="Name of the site",
+    required=True,
+    default=lambda: os.environ.get("EGI_SITE", None)
 )
 @click.option(
     "--project-id",
