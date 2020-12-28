@@ -1,8 +1,8 @@
 Introduction
 ============
 
-``fedcloudclient`` is a high-level Python package for interaction with EGI Federated Cloud. This package is an 
-extension of the ``egicli`` package (see `here <https://github.com/EGI-Foundation/egicli>`_) for Openstack commands.
+``fedcloudclient`` is a command-line client and high-level Python package for interaction with EGI Federated Cloud.
+This package is an extension of the ``egicli`` package (see `here <https://github.com/EGI-Foundation/egicli>`_) for Openstack commands.
 
 The aim here was to create a simple client which would allow users to perform the various Openstack operations 
 in EGI Federated Cloud. Four modules are included: ``fedcloudclient.checkin`` for operation with EGI CheckIn like

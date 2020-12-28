@@ -29,8 +29,8 @@ The full set of *openstack* client commands is described
 
 Beside using as command-line client, fedcloud client can be used as
 development library for developers of tools and services for EGI
-Federated Cloud. See the demo code *demo.py* in */examples* to see how
-the library is used.
+Federated Cloud. See the demo code [*"demo.py"*](https://github.com/tdviet/fedcloudclient/blob/fedcloud-client/examples/demo.py)
+to see how the library is used.
 
 Quick start
 -----------
@@ -108,7 +108,8 @@ or use Docker container:
 
 -   Experiment with more Openstack commands, e.g. *"fedcloud openstack
     server list"*. The full list of Openstack commands are available
-    [here](https://docs.openstack.org/python-openstackclient/latest/cli/command-list.html).
+    [here](https://docs.openstack.org/python-openstackclient/latest/cli/command-list.html)
+    or via command *"openstack help"*.
 
 Using fedcloudclient as development library
 -------------------------------------------
@@ -127,7 +128,7 @@ Python:
         openstack_command)
 
 See a working example [*"demo.py"*](https://github.com/tdviet/fedcloudclient/blob/fedcloud-client/examples/demo.py). 
-More documentations will be available soon.
+The documentation of fedcloudclient API is available at [readthedocs.io](https://fedcloudclient.readthedocs.io/en/fedcloud-client/).
 
 FAQ
 ---
@@ -146,13 +147,13 @@ FAQ
 
 > Some sites use certificates issued by national grid CAs that are not
 > included in default distribution, so *fedcloud* client cannot verify
-> them. Follow instructions in the documentation to install [EGI Core Trust
-> Anchor](http://repository.egi.eu/category/production/cas/) and add
+> them. Follow this [instructions](https://github.com/tdviet/python-requests-bundle-certs/blob/main/docs/Install_certificates.md)
+> to install [EGI Core Trust Anchor](http://repository.egi.eu/category/production/cas/) and add
 > certificates to Python request certificate bundle.
 > 
 > In the case of using virtual environment for quick test, you can download 
 > and import bundle certificates by using
-> the script from [this repository](ttps://github.com/tdviet/python-requests-bundle-certs)
+> the script from [this repository](https://github.com/tdviet/python-requests-bundle-certs)
 
 3.  The *fedcloud* client fails with error message *"VO XX not found on site YY"* but they do exist.
 

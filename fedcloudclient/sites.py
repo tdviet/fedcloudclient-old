@@ -39,8 +39,8 @@ local_config_dir = ".fedcloud-site-config/"
 
 def read_site_config():
     """
-    Read site info from local config dir if exist, otherwise from default GitHub location. Storing
-    site configuration in global variable, that will be used by other functions. Call read_local_site_config()
+    Read site configurations from local config dir if exist, otherwise from default GitHub location. Storing
+    site configurations in global variable, that will be used by other functions. Call read_local_site_config()
     or read_default_site_config()
 
     :return: None
@@ -56,8 +56,8 @@ def read_site_config():
 
 def read_default_site_config():
     """
-    Read default site config from GitHub.  Storing
-    site configuration in global variable, that will be used by other functions
+    Read default site configurations from GitHub.  Storing
+    site configurations in a global variable, that will be used by other functions
 
     :return: None
     """
@@ -70,8 +70,8 @@ def read_default_site_config():
 
 def read_local_site_config(config_dir):
     """
-    Read site config from local directory specified in config_dir. Storing
-    site configuration in global variable, that will be used by other functions
+    Read site configurations from local directory specified in config_dir. Storing
+    site configurations in global variable, that will be used by other functions
 
     :param config_dir: path to directory containing site configuration
 
@@ -102,7 +102,7 @@ def save_site_config(config_dir):
 
 def list_sites():
     """
-    List of all sites IDs in site configuration
+    List of all sites IDs in site configurations
 
     :return: list of site IDs
     """
@@ -115,10 +115,10 @@ def list_sites():
 
 def find_site_data(site_name):
     """
-    Return Keystone endpoint of the correspondent site with site_name
+    Return configuration of the correspondent site with site_name
 
     :param site_name: site ID in GOCDB
-    :return: endpoint of site if found, otherwise None
+    :return: configuration of site if found, otherwise None
     """
     read_site_config()
 
