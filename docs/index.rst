@@ -11,7 +11,7 @@ Welcome to fedcloudclient's documentation!
    :caption: Contents:
 
    intro
-   ../README.md
+   .. mdinclude::../README.md
    modules
 
 

@@ -147,7 +147,7 @@ FAQ
 
 > Some sites use certificates issued by national grid CAs that are not
 > included in default distribution, so *fedcloud* client cannot verify
-> them. Follow this [instructions](https://github.com/tdviet/python-requests-bundle-certs/blob/main/docs/Install_certificates.md)
+> them. Follow this [instruction](https://github.com/tdviet/python-requests-bundle-certs/blob/main/docs/Install_certificates.md)
 > to install [EGI Core Trust Anchor](http://repository.egi.eu/category/production/cas/) and add
 > certificates to Python request certificate bundle.
 > 
