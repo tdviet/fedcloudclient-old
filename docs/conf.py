@@ -31,7 +31,7 @@ release = '0.0.2-dev15'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = ['sphinx.ext.todo', 'sphinx.ext.viewcode', 'sphinx.ext.autodoc',
-              'm2r',
+              'm2r2',
 ]
 
 source_suffix = ['.rst', '.md']
