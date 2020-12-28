@@ -109,7 +109,7 @@ def fedcloud_openstack(
     :param site: site ID in GOCDB
     :param vo: VO name
     :param openstack_command: Openstack command in tuple, e.g. ("image", "list", "--long")
-    :param json_output: if result is JSON object or string. Default:True
+    :param json_format: if result is JSON object or string. Default:True
 
     :return: error code, result or error message
     """
@@ -193,6 +193,8 @@ def openstack(
     else:
         sites = [site]
     for current_site in sites:
+        result = None
+        error_code = None
         error_code, result = fedcloud_openstack(
             access_token,
             current_site,
@@ -204,5 +206,7 @@ def openstack(
         if error_code != 0:
             print("Error code: ", error_code)
             print("Error message: ", result)
+            result = None
         else:
             print(result)
+            result = None
