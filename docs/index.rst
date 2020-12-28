@@ -10,7 +10,9 @@ Welcome to fedcloudclient's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-fedcloudclient
+   intro
+   modules
+
 
 
 Indices and tables

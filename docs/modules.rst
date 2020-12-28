@@ -1,5 +1,5 @@
-fedcloudclient
-==============
+fedcloudclient library
+======================
 
 .. toctree::
    :maxdepth: 4
