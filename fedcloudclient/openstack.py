@@ -61,17 +61,21 @@ def fedcloud_openstack_full(
     # Redirecting stdout and stderr from openstack client
     # to result and error string
     old_stdout = sys.stdout
+    sys.stdout.flush()
     result = StringIO()
     sys.stdout = result
 
     old_stderr = sys.stderr
+    sys.stderr.flush()
     error = StringIO()
     sys.stderr = error
 
     # Calling openstack client
     error_code = openstackclient.shell.main(openstack_command + options)
 
+    sys.stdout.flush()
     sys.stdout = old_stdout
+    sys.stderr.flush()
     sys.stderr = old_stderr
 
     if error_code == 0:
