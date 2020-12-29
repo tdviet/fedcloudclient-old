@@ -1,5 +1,6 @@
 import json
 import os
+from distutils.spawn import find_executable
 
 import click
 import openstackclient.shell
@@ -8,10 +9,11 @@ import subprocess
 from fedcloudclient.checkin import get_access_token
 from fedcloudclient.sites import find_endpoint_and_project_id, list_sites
 
-
 DEFAULT_PROTOCOL = "openid"
 DEFAULT_AUTH_TYPE = "v3oidcaccesstoken"
 DEFAULT_IDENTITY_PROVIDER = "egi.eu"
+
+OPENSTACK_CLIENT = "openstack"
 
 
 def fedcloud_openstack_full(
@@ -59,7 +61,7 @@ def fedcloud_openstack_full(
         options = options + ("--format", "json")
 
     # Calling openstack client as subprocess, caching stdout/stderr
-    completed = subprocess.run(("openstack",) + openstack_command + options, capture_output=True)
+    completed = subprocess.run((OPENSTACK_CLIENT,) + openstack_command + options, capture_output=True)
 
     error_code = completed.returncode
     error_message = completed.stderr.decode('utf-8')
@@ -85,7 +87,7 @@ def fedcloud_openstack(
         site,
         vo,
         openstack_command,
-        json_format=True
+        json_output=True
 ):
     """
     Simplified version of fedcloud_openstack_full() function using
@@ -96,7 +98,7 @@ def fedcloud_openstack(
     :param site: site ID in GOCDB
     :param vo: VO name
     :param openstack_command: Openstack command in tuple, e.g. ("image", "list", "--long")
-    :param json_format: if result is JSON object or string. Default:True
+    :param json_output: if result is JSON object or string. Default:True
 
     :return: error code, result or error message
     """
@@ -109,8 +111,18 @@ def fedcloud_openstack(
         site,
         vo,
         openstack_command,
-        json_format
+        json_output
     )
+
+
+def check_openstack_client_installation():
+    """
+    Check if openstack command-line client is installed and available via $PATH
+
+    :return: True if available
+    """
+
+    return find_executable(OPENSTACK_CLIENT) is not None
 
 
 @click.command(context_settings={"ignore_unknown_options": True})
@@ -169,6 +181,11 @@ def openstack(
     Calling openstack client with access token, site ID, VO name and openstack command
     """
 
+    if not check_openstack_client_installation():
+        print("Openstack client \"openstack\" does not exist")
+        print("Please check if your openstack client installation is available via $PATH")
+        exit(1)
+
     access_token = get_access_token(checkin_access_token,
                                     checkin_refresh_token,
                                     checkin_client_id,
@@ -180,6 +197,7 @@ def openstack(
     else:
         sites = [site]
     for current_site in sites:
+        print("Site: %s, VO: %s" % (current_site, vo))
         error_code, result = fedcloud_openstack(
             access_token,
             current_site,
@@ -187,7 +205,6 @@ def openstack(
             openstack_command,
             False  # No JSON output in shell mode
         )
-        print("Site: %s, VO: %s" % (current_site, vo))
         if error_code != 0:
             print("Error code: ", error_code)
             print("Error message: ", result)

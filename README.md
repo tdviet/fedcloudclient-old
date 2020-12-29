@@ -140,6 +140,9 @@ FAQ
 > [GitHub repository](https://github.com/EGI-Foundation/fedcloud-catchall-operations/tree/master/sites)
 > and save them on a local machine. That will significantly speedup site
 > configurations loading.
+> 
+> Some sites in the repository may not respond, and client has to wait for long time before report 
+> "Connection time out". You can remove the sites from your local repository to speed-up all-sites operations
 
 2.  The *fedcloud* client fails with error message *"SSL exception
     connecting to <https://> ..."* when attempts to interact with some
