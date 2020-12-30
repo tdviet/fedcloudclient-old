@@ -108,12 +108,12 @@ def get_access_token(
     elif checkin_access_token:
 
         # Check expiration time of access token
-        payload = jwt.decode(checkin_access_token, verify=False)
         try:
-            expiration_timestamp = int(payload['exp'])
+            payload = jwt.decode(checkin_access_token, verify=False)
         except:
             raise SystemExit("Invalid access token.")
 
+        expiration_timestamp = int(payload['exp'])
         current_timestamp = int(time.time())
         if current_timestamp > expiration_timestamp - 10:
             raise SystemExit("The given access token has expired." +
