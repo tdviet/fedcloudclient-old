@@ -182,8 +182,8 @@ def openstack(
     """
 
     if not check_openstack_client_installation():
-        print("Openstack client \"openstack\" does not exist")
-        print("Please check if your openstack client installation is available via $PATH")
+        print("Openstack command-line client \"openstack\" not found")
+        print("Please check if your openstack client is available via $PATH")
         exit(1)
 
     access_token = get_access_token(checkin_access_token,
