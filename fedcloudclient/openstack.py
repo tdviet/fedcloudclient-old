@@ -61,7 +61,7 @@ def fedcloud_openstack_full(
         options = options + ("--format", "json")
 
     # Calling openstack client as subprocess, caching stdout/stderr
-    completed = subprocess.run((OPENSTACK_CLIENT,) + openstack_command + options, capture_output=True)
+    completed = subprocess.run((OPENSTACK_CLIENT,) + openstack_command + options, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     error_code = completed.returncode
     error_message = completed.stderr.decode('utf-8')
