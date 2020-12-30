@@ -79,7 +79,7 @@ def read_local_site_config(config_dir):
     """
     site_config_data.clear()
     config_dir = Path(config_dir)
-    for f in config_dir.glob('*.yaml'):
+    for f in sorted(config_dir.glob('*.yaml')):
         yaml_file = f.open()
         site_info = yaml.safe_load(yaml_file)
         site_config_data.append(site_info)
