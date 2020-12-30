@@ -109,7 +109,11 @@ def get_access_token(
 
         # Check expiration time of access token
         payload = jwt.decode(checkin_access_token, verify=False)
-        expiration_timestamp = int(payload['exp'])
+        try:
+            expiration_timestamp = int(payload['exp'])
+        except:
+            raise SystemExit("Invalid access token.")
+
         current_timestamp = int(time.time())
         if current_timestamp > expiration_timestamp - 10:
             raise SystemExit("The given access token has expired." +
@@ -212,10 +216,14 @@ def check(
         print("Checkin access token is required")
         exit(1)
 
-    payload = jwt.decode(checkin_access_token, verify=False)
+    try:
+        payload = jwt.decode(checkin_access_token, verify=False)
+    except:
+        raise SystemExit("Invalid access token.")
+
     expiration_timestamp = int(payload['exp'])
     expiration_time = datetime.utcfromtimestamp(expiration_timestamp).strftime('%Y-%m-%d %H:%M:%S')
-    print("Access token is valid to ", expiration_time)
+    print("Access token is valid to %s UTC" % expiration_time)
     current_timestamp = int(time.time())
     if current_timestamp < expiration_timestamp:
         print("Access token expires in %d seconds" % (expiration_timestamp - current_timestamp))

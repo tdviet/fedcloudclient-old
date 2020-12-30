@@ -79,7 +79,8 @@ def fedcloud_openstack_full(
             return error_code, result_str
     else:
         # If error code != 0, return error message instead of result
-        return error_code, error_message
+        # But attach also result string, as applications may print error messages to stdout instead stderr
+        return error_code, error_message + result_str
 
 
 def fedcloud_openstack(
