@@ -61,7 +61,8 @@ def fedcloud_openstack_full(
         options = options + ("--format", "json")
 
     # Calling openstack client as subprocess, caching stdout/stderr
-    completed = subprocess.run((OPENSTACK_CLIENT,) + openstack_command + options, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    completed = subprocess.run((OPENSTACK_CLIENT,) + openstack_command + options,
+                               stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     error_code = completed.returncode
     error_message = completed.stderr.decode('utf-8')
@@ -166,6 +167,7 @@ def check_openstack_client_installation():
 )
 @click.argument(
     "openstack_command",
+    required=True,
     nargs=-1
 )
 def openstack(
@@ -183,8 +185,7 @@ def openstack(
     """
 
     if not check_openstack_client_installation():
-        print("Openstack command-line client \"openstack\" not found")
-        print("Please check if your openstack client is available via $PATH")
+        print("Error: Openstack command-line client \"openstack\" not found")
         exit(1)
 
     access_token = get_access_token(checkin_access_token,
@@ -211,3 +212,81 @@ def openstack(
             print("Error message: ", result)
         else:
             print(result)
+
+
+@click.command()
+@click.option(
+    "--checkin-client-id",
+    help="Check-in client id",
+    default=lambda: os.environ.get("CHECKIN_CLIENT_ID", None),
+)
+@click.option(
+    "--checkin-client-secret",
+    help="Check-in client secret",
+    default=lambda: os.environ.get("CHECKIN_CLIENT_SECRET", None),
+)
+@click.option(
+    "--checkin-refresh-token",
+    help="Check-in refresh token",
+    default=lambda: os.environ.get("CHECKIN_REFRESH_TOKEN", None),
+)
+@click.option(
+    "--checkin-access-token",
+    help="Check-in access token",
+    default=lambda: os.environ.get("CHECKIN_ACCESS_TOKEN", None),
+)
+@click.option(
+    "--checkin-url",
+    help="Check-in OIDC URL",
+    required=True,
+    default=lambda: os.environ.get("CHECKIN_OIDC_URL", "https://aai.egi.eu/oidc"),
+)
+@click.option(
+    "--site",
+    help="Name of the site",
+    required=True,
+    default=lambda: os.environ.get("EGI_SITE", None),
+)
+@click.option(
+    "--vo",
+    help="Name of the VO",
+    required=True,
+    default=lambda: os.environ.get("EGI_VO", None),
+)
+def openstack_int(
+        checkin_client_id,
+        checkin_client_secret,
+        checkin_refresh_token,
+        checkin_access_token,
+        checkin_url,
+        site,
+        vo
+):
+    """
+    Interactive openstack client with access token, site ID, VO name
+    """
+
+    if not check_openstack_client_installation():
+        print("Error: Openstack command-line client \"openstack\" not found")
+        exit(1)
+
+    access_token = get_access_token(checkin_access_token,
+                                    checkin_refresh_token,
+                                    checkin_client_id,
+                                    checkin_client_secret,
+                                    checkin_url)
+
+    endpoint, project_id = find_endpoint_and_project_id(site, vo)
+    if endpoint is None:
+        raise SystemExit("Error: VO %s not found on site %s" % (vo, site))
+
+    my_env = os.environ.copy()
+    my_env["OS_AUTH_URL"] = endpoint
+    my_env["OS_AUTH_TYPE"] = DEFAULT_AUTH_TYPE
+    my_env["OS_PROTOCOL"] = DEFAULT_PROTOCOL
+    my_env["OS_IDENTITY_PROVIDER"] = DEFAULT_IDENTITY_PROVIDER
+    my_env["OS_ACCESS_TOKEN"] = access_token
+    my_env["OS_PROJECT_ID"] = project_id
+
+    subprocess.run(OPENSTACK_CLIENT, env=my_env)
+
