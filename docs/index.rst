@@ -11,6 +11,8 @@ Welcome to fedcloudclient's documentation!
    :caption: Contents:
 
    intro
+   install
+   usage
    fedcloudclient
 
 

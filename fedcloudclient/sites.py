@@ -200,7 +200,7 @@ def show_project_id(site, vo):
     if endpoint:
         print(" Endpoint : %s \n Project ID : %s" % (endpoint, project_id))
     else:
-        print("Site %s or VO %s not found" % (site, vo))
+        print("VO %s not found on site %s" % (vo, site))
 
 
 @site.command()
@@ -217,7 +217,7 @@ def show_all():
 @site.command()
 def save_config():
     """
-    Read default site configs from GigHub and save them to local folder in home directory
+    Read default site configs from GitHub and save them to local folder in home directory
     Overwrite local configs if exist
     """
     read_default_site_config()
