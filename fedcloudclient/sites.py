@@ -156,7 +156,7 @@ def find_endpoint_and_project_id(site_name, vo):
 @click.group()
 def site():
     """
-    CLI site command group.
+    Site command group for manipulation with site configurations
     """
     pass
 

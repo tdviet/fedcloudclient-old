@@ -240,7 +240,7 @@ def get_project_id_from_vo_site(access_token, vo, site):
 @click.group()
 def endpoint():
     """
-    CLI endpoint command group.
+    endpoint command group for interaction with GOCDB and endpoints
     """
     pass
 

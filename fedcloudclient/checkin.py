@@ -150,7 +150,7 @@ def token_list_vos(checkin_access_token, checkin_url):
 @click.group()
 def token():
     """
-    CLI token command group. Execute "fedcloud token" to see more
+    Token command group for manipulation with tokens
     """
     pass
 

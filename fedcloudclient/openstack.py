@@ -181,7 +181,7 @@ def openstack(
         openstack_command
 ):
     """
-    Calling openstack client with access token, site ID, VO name and openstack command
+    Executing Openstack commands on site and VO
     """
 
     if not check_openstack_client_installation():
@@ -263,7 +263,7 @@ def openstack_int(
         vo
 ):
     """
-    Interactive openstack client with access token, site ID, VO name
+    Interactive Openstack client on site and VO
     """
 
     if not check_openstack_client_installation():
