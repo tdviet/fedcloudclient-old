@@ -16,7 +16,7 @@ RUN pip install /tmp/fedcloudclient
 RUN cat /etc/grid-security/certificates/*.pem >> $(python -m requests.certs)
 
 # Save site configs
-RUN fedcloud save-config
+RUN fedcloud site save-config
 
 CMD ["/usr/local/bin/fedcloud"]
 
