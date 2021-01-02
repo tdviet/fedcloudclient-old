@@ -49,9 +49,9 @@ For convenience, always set the frequently used options like tokens via environm
 fedcloud --help command
 ***********************
 
-**"fedcloud --help"** command will print help message. When using it in combination with other
-commands, e.g. **"fedcloud token --help"**, **"fedcloud token check --hep"**, it will print list of options for the
-corresponding commands
+* **"fedcloud --help"** command will print help message. When using it in combination with other
+  commands, e.g. **"fedcloud token --help"**, **"fedcloud token check --hep"**, it will print list of options for the
+  corresponding commands
 
 ::
 
@@ -72,9 +72,9 @@ corresponding commands
 fedcloud token commands
 ***********************
 
-**"fedcloud token check --checkin-access-token <ACCESS_TOKEN>"**: Check the expiration time of access token, so users can know whether
-they need to refresh it. As mentioned before, access token may be given via environment variable *CHECKIN_ACCESS_TOKEN*,
-so the option *--checkin-access-token* is not shown in all examples bellows, even if the option is required.
+* **"fedcloud token check --checkin-access-token <ACCESS_TOKEN>"**: Check the expiration time of access token, so users can know whether
+  they need to refresh it. As mentioned before, access token may be given via environment variable *CHECKIN_ACCESS_TOKEN*,
+  so the option *--checkin-access-token* is not shown in all examples bellows, even if the option is required.
 
 ::
 
@@ -83,7 +83,7 @@ so the option *--checkin-access-token* is not shown in all examples bellows, eve
     Access token expires in 3571 seconds
 
 
-**"fedcloud token list-vos --checkin-access-token <ACCESS_TOKEN>"** : Print the list of VO memberships according to the EGI CheckIn
+* **"fedcloud token list-vos --checkin-access-token <ACCESS_TOKEN>"** : Print the list of VO memberships according to the EGI CheckIn
 
 ::
 
@@ -101,7 +101,7 @@ fedcloud endpoint commands
 configurations defined in files saved in GitHub repository or local disk, the commands try to get site information
 directly from GOCDB (Grid Operations Configuration Management Database) https://goc.egi.eu/ or make probe test on sites
 
-**"fedcloud endpoint list"** : List of endpoints of sites defined in GOCDB.
+* **"fedcloud endpoint list"** : List of endpoints of sites defined in GOCDB.
 
 ::
 
@@ -112,8 +112,8 @@ directly from GOCDB (Grid Operations Configuration Management Database) https://
     IN2P3-IRES          org.openstack.nova  https://sbgcloud.in2p3.fr:5000/v3
     ...
 
-**"fedcloud endpoint projects --site <SITE> --checkin-access-token <ACCESS_TOKEN>"** : List of projects that the owner
-of the access token can have access on the given site
+* **"fedcloud endpoint projects --site <SITE> --checkin-access-token <ACCESS_TOKEN>"** : List of projects that the owner
+  of the access token can have access on the given site
 
 ::
 
@@ -124,16 +124,16 @@ of the access token can have access on the given site
     3b9754ad8c6046b4aec43ec21abe7d8c  VO:eosc-synergy.eu          True       IFCA-LCG2
     ...
 
-**"fedcloud endpoint token --site <SITE> --project-id <PROJECT> --checkin-access-token <ACCESS_TOKEN>"** : Get
-Openstack keystone scoped token on the site for the project ID.
+* **"fedcloud endpoint token --site <SITE> --project-id <PROJECT> --checkin-access-token <ACCESS_TOKEN>"** : Get
+  Openstack keystone scoped token on the site for the project ID.
 
 ::
 
     $ fedcloud endpoint token --site IFCA-LCG2 --project-id 3b9754ad8c6046b4aec43ec21abe7d8c
     export OS_TOKEN="gAAAAA..."
 
-**"fedcloud endpoint env --site <SITE> --project-id <PROJECT> --checkin-access-token <ACCESS_TOKEN>"** : Print
-environment variables for working with the project ID on the site.
+* **"fedcloud endpoint env --site <SITE> --project-id <PROJECT> --checkin-access-token <ACCESS_TOKEN>"** : Print
+  environment variables for working with the project ID on the site.
 
 ::
 
@@ -158,17 +158,17 @@ explicitly via **"fedcloud site save-config"** command. The advantage of having 
 site configurations, beside faster loading, is to give users ability to make customizations, e.g. add additional VOs,
 remove sites they do not have access, and so on.
 
-**"fedcloud site save-config"** : Read the default site configurations from GitHub
-and save them to *~/.fedcloud-site-config/* local directory. The command will overwrite existing site configurations
-in the local directory.
+* **"fedcloud site save-config"** : Read the default site configurations from GitHub
+  and save them to *~/.fedcloud-site-config/* local directory. The command will overwrite existing site configurations
+  in the local directory.
 
 ::
 
-    $$ fedcloud site save-config
+    $ fedcloud site save-config
     Saving site configs to directory /home/viet/.fedcloud-site-config
 
 
-**"fedcloud site list"** : List of existing sites in the site configurations
+* **"fedcloud site list"** : List of existing sites in the site configurations
 
 ::
 
@@ -178,7 +178,7 @@ in the local directory.
     CESGA
     ...
 
-**"fedcloud site show --site <SITE>"** : Show configuration of the corresponding site.
+* **"fedcloud site show --site <SITE>"** : Show configuration of the corresponding site.
 
 ::
 
@@ -196,9 +196,9 @@ in the local directory.
         ...
 
 
-**"fedcloud site show-all"** : Show configurations of all sites.
+* **"fedcloud site show-all"** : Show configurations of all sites.
 
-**"fedcloud site show-project-id --site <SITE> --vo <VO>"**: show the project ID of the VO on the site.
+* **"fedcloud site show-project-id --site <SITE> --vo <VO>"**: show the project ID of the VO on the site.
 
 ::
 
@@ -210,10 +210,10 @@ in the local directory.
 fedcloud openstack commands
 ***************************
 
-**"fedcloud openstack --site <SITE> --vo <VO> --checkin-access-token <ACCESS_TOKEN> <OPENSTACK_COMMAND>"** : perform an
-Openstack command on the site and VO. Examples of Openstack commands are *"image list"*, *"server list"* and can be used
-with additional options for the commands, e.g. *"image list --long"*, *"server list --format json"*. The list of all
-Openstack commands, and their parameters/usages are available
+* **"fedcloud openstack --site <SITE> --vo <VO> --checkin-access-token <ACCESS_TOKEN> <OPENSTACK_COMMAND>"** : perform an
+  Openstack command on the site and VO. Examples of Openstack commands are *"image list"*, *"server list"* and can be used
+  with additional options for the commands, e.g. *"image list --long"*, *"server list --format json"*. The list of all
+  Openstack commands, and their parameters/usages are available
 `here <https://docs.openstack.org/python-openstackclient/latest/cli/command-list.html>`_.
 
 ::
@@ -226,9 +226,9 @@ Openstack commands, and their parameters/usages are available
     | 862d4ede-6a11-4227-8388-c94141a5dace | Image for EGI CentOS 7 [CentOS/7/VirtualBox]    | active |
     ...
 
-**"fedcloud openstack-int --site <SITE> --vo <VO> --checkin-access-token <ACCESS_TOKEN>"** : Call Openstack client without
-command, so users can work interactively. OIDC authentication is done only once at the beginning, then the keystone
-token is cached and will be used for successive commands without authentication via CheckIn again.
+* **"fedcloud openstack-int --site <SITE> --vo <VO> --checkin-access-token <ACCESS_TOKEN>"** : Call Openstack client without
+  command, so users can work interactively. OIDC authentication is done only once at the beginning, then the keystone
+  token is cached and will be used for successive commands without authentication via CheckIn again.
 
 ::
 

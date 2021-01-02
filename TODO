@@ -1,6 +1,6 @@
 - Adding support for integration with AppDB for images
     + Images are specify with parameter "--appdb <image name in AppDB>"
-    + The client will replace the parameter with "--image imageID" before calling Openstack client
+    + The client will replace the parameter with "--image imageID" before calling Openstack client (like site and VO)
 
 - Separating CLI functions from library functions, keep them in different files, e.g. sites.py and sites_cli.py
     + Better understanding and maintaining the code
@@ -8,3 +8,8 @@
 - Script for automation of generating certificate bundle and upload to https://github.com/tdviet/python-requests-bundle-certs
     + Just create a new docker image for fedcloud client then upload the certificate bundle from there.
     + Execute the script periodically via cron to keep the certificate bundle always up to date.
+
+- Caching keystone token, reuse it for successive Openstack commands without authentication via CheckIn again
+    + Make a dict: key = hash of (site + vo + access token), value = keystone token
+    + Before using Openstack command, check the dict reuse the token if found. If not found, generate new token
+    and add it to the dict.
