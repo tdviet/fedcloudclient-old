@@ -1,9 +1,9 @@
-Using fedcloudclient as command-lien client
+Using fedcloudclient as command-line client
 ===========================================
 
 **fedcloudclient** has four groups of commands: **"fedcloud token"** for interactions with EGI CheckIn and access tokens,
 **"fedcloud endpoint"** for interactions with GOCDB (and site endpoints according to GOCDB), **"fedcloud site"** for
-manipulation with site configurations, and **"fedcloud openstack"** or **"fedcloud openstack-int"** for performing
+manipulations with site configurations, and **"fedcloud openstack"** or **"fedcloud openstack-int"** for performing
 Openstack commands on sites.
 
 Authentication
@@ -22,7 +22,7 @@ Environment variables
 Most of fedcloud options, including options for tokens can be set via environment variables:
 
 +-----------------------------+---------------------------------+
-|     Environment variable    |   Command-line options          |
+|     Environment variables   |   Command-line options          |
 +=============================+=================================+
 |    CHECKIN_ACCESS_TOKEN     |   --checkin-access-token        |
 +-----------------------------+---------------------------------+
@@ -39,7 +39,7 @@ Most of fedcloud options, including options for tokens can be set via environmen
 |    EGI_VO                   |   --vo                          |
 +-----------------------------+---------------------------------+
 
-For convenience, always set the frequently used options like tokens via environment variable, that can save a lot of time.
+For convenience, always set the frequently used options like tokens via environment variables, that can save a lot of time.
 
 fedcloud --help command
 ***********************
@@ -172,6 +172,7 @@ Openstack commands, and their parameters/usages are available
     | ID                                   | Name                                            | Status |
     +--------------------------------------+-------------------------------------------------+--------+
     | 862d4ede-6a11-4227-8388-c94141a5dace | Image for EGI CentOS 7 [CentOS/7/VirtualBox]    | active |
+    ...
 
 **"fedcloud openstack-int --site <SITE> --vo <VO> --checkin-access-token <ACCESS_TOKEN>"** : Call Openstack client without
 command, so users can work interactively. OIDC authentication is done only once at the beginning, then the keystone

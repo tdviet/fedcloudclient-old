@@ -32,6 +32,9 @@ development library for developers of tools and services for EGI
 Federated Cloud. See the demo code [*"demo.py"*](https://github.com/tdviet/fedcloudclient/blob/fedcloud-client/examples/demo.py)
 to see how the library is used.
 
+The full documentation, including installation, usage and API description is available 
+at [readthedocs.io](https://fedcloudclient.readthedocs.io/)
+
 Quick start
 -----------
 
