@@ -11,7 +11,12 @@ Authentication
 
 Many **fedcloud** commands need access token for authentication. Users can choose whether to provide access token
 directly (via option *"--checkin-access-token"*), or using refresh token (must be provided together with
-CheckIn client ID and secret) to generate access token on the fly.
+CheckIn client ID and secret) to generate access token on the fly. Therefore, in most cases, the option
+*"--checkin-access-token"* can be replaced by the combination of *"--checkin-refresh-token"*, *"--checkin-client-id"*
+and *"--checkin-client-secret"*.
+
+Users of EGI CheckIn can get all information needed for obtaining refresh and access tokens from `CheckIn FedCloud
+client <https://aai.egi.eu/fedcloud/>`_.
 
 The default OIDC identity provider is EGI CheckIn (https://aai.egi.eu/oidc). Users can set other OIDC identity
 provider via option *"--checkin-url"*.
@@ -68,7 +73,8 @@ fedcloud token commands
 ***********************
 
 **"fedcloud token check --checkin-access-token <ACCESS_TOKEN>"**: Check the expiration time of access token, so users can know whether
-they need to refresh it. As mentioned before, access token may be given via environment variable *CHECKIN_ACCESS_TOKEN*
+they need to refresh it. As mentioned before, access token may be given via environment variable *CHECKIN_ACCESS_TOKEN*,
+so the option *--checkin-access-token* is not shown in all examples bellows, even if the option is required.
 
 ::
 
@@ -91,12 +97,58 @@ they need to refresh it. As mentioned before, access token may be given via envi
 fedcloud endpoint commands
 **************************
 
+**"fedcloud endpoint"** commands are complementary part of the **"fedcloud site"** commands. Instead of using site
+configurations defined in files saved in GitHub repository or local disk, the commands try to get site information
+directly from GOCDB (Grid Operations Configuration Management Database) https://goc.egi.eu/ or make probe test on sites
 
+**"fedcloud endpoint list"** : List of endpoints of sites defined in GOCDB.
 
+::
+
+    $ fedcloud endpoint list
+    Site                type                URL
+    ------------------  ------------------  ------------------------------------------------
+    IFCA-LCG2           org.openstack.nova  https://api.cloud.ifca.es:5000/v3/
+    IN2P3-IRES          org.openstack.nova  https://sbgcloud.in2p3.fr:5000/v3
+    ...
+
+**"fedcloud endpoint projects --site <SITE> --checkin-access-token <ACCESS_TOKEN>"** : List of projects that the owner
+of the access token can have access on the given site
+
+::
+
+    $ fedcloud endpoint projects --site IFCA-LCG2
+    id                                Name                        enabled    site
+    --------------------------------  --------------------------  ---------  ---------
+    2a7e2cd4b6dc4e609dd934964c1715c6  VO:demo.fedcloud.egi.eu     True       IFCA-LCG2
+    3b9754ad8c6046b4aec43ec21abe7d8c  VO:eosc-synergy.eu          True       IFCA-LCG2
+    ...
+
+**"fedcloud endpoint token --site <SITE> --project-id <PROJECT> --checkin-access-token <ACCESS_TOKEN>"** : Get
+Openstack keystone scoped token on the site for the project ID.
+
+::
+
+    $ fedcloud endpoint token --site IFCA-LCG2 --project-id 3b9754ad8c6046b4aec43ec21abe7d8c
+    export OS_TOKEN="gAAAAA..."
+
+**"fedcloud endpoint env --site <SITE> --project-id <PROJECT> --checkin-access-token <ACCESS_TOKEN>"** : Print
+environment variables for working with the project ID on the site.
+
+::
+
+    $ fedcloud endpoint env --site IFCA-LCG2 --project-id 3b9754ad8c6046b4aec43ec21abe7d8c
+    # environment for IFCA-LCG2
+    export OS_AUTH_URL="https://api.cloud.ifca.es:5000/v3/"
+    export OS_AUTH_TYPE="v3oidcaccesstoken"
+    export OS_IDENTITY_PROVIDER="egi.eu"
+    export OS_PROTOCOL="openid"
+    export OS_ACCESS_TOKEN="..."
 
 
 fedcloud site commands
 **********************
+
 **"fedcloud site"** commands will read site configurations and manipulate with them. If the local site configurations exist
 at *~/.fedcloud-site-config/*, **fedcloud** will read them from there, otherwise the commands will read from `GitHub repository
 <https://github.com/EGI-Foundation/fedcloud-catchall-operations/tree/master/sites>`_.

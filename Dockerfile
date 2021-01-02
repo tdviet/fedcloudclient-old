@@ -13,7 +13,10 @@ COPY . /tmp/fedcloudclient
 RUN pip install /tmp/fedcloudclient
 
 # And fix the CAs
-RUN cat /etc/grid-security/certificates/*.pem >> $(python -m requests.certs) 
+RUN cat /etc/grid-security/certificates/*.pem >> $(python -m requests.certs)
+
+# Save site configs
+RUN fedcloud save-config
 
 CMD ["/usr/local/bin/fedcloud"]
 

@@ -38,7 +38,8 @@ test in virtual environment, just execute the following commands
 Using fedcloudclient via Docker container:
 ******************************************
 
-You can use Docker container for testing **fedcloudclient** without installation
+You can use Docker container for testing **fedcloudclient** without installation. EGI Core Trust Anchor certificates
+and site configurations are preinstalled.
 
 ::
 
