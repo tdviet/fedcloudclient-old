@@ -9,18 +9,18 @@ fedcloudclient.checkin module
    :undoc-members:
    :show-inheritance:
 
-fedcloudclient.cli module
--------------------------
-
-.. automodule:: fedcloudclient.cli
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 fedcloudclient.endpoint module
 ------------------------------
 
 .. automodule:: fedcloudclient.endpoint
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+fedcloudclient.sites module
+---------------------------
+
+.. automodule:: fedcloudclient.sites
    :members:
    :undoc-members:
    :show-inheritance:
@@ -33,10 +33,10 @@ fedcloudclient.openstack module
    :undoc-members:
    :show-inheritance:
 
-fedcloudclient.sites module
----------------------------
+fedcloudclient.cli module
+-------------------------
 
-.. automodule:: fedcloudclient.sites
+.. automodule:: fedcloudclient.cli
    :members:
    :undoc-members:
    :show-inheritance:
