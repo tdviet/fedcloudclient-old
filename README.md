@@ -192,7 +192,7 @@ FAQ
 > computers, refresh tokens may be conveniently specified via environment
 > variables *CHECKIN\_REFRESH\_TOKEN*, *CHECKIN\_CLIENT\_ID*,
 > *CHECKIN\_CLIENT\_SECRET*; so users don't have to set token for
-> *fecloud* client via command-line parameters.
+> *fedcloud* client via command-line parameters.
 >
 > Access tokens have short lifetime (one hour in EGI CheckIn), so they
 > have lower security constraints. However, they have to be refreshed

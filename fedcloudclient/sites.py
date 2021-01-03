@@ -100,6 +100,7 @@ def save_site_config(config_dir):
         with config_file.open("w", encoding="utf-8") as f:
             yaml.dump(site_info, f)
 
+
 def list_sites():
     """
     List of all sites IDs in site configurations

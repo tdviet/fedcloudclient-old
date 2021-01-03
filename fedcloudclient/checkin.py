@@ -110,18 +110,18 @@ def get_access_token(
         # Check expiration time of access token
         try:
             payload = jwt.decode(checkin_access_token, verify=False)
-        except:
+        except jwt.exceptions.InvalidTokenError:
             raise SystemExit("Error: Invalid access token.")
 
         expiration_timestamp = int(payload['exp'])
         current_timestamp = int(time.time())
         if current_timestamp > expiration_timestamp - 10:
-            raise SystemExit("The given access token has expired." +
-                             " Get new access token before continuing on operation")
+            raise SystemExit("The given access token has expired."
+                             + " Get new access token before continuing on operation")
         return checkin_access_token
     else:
-        raise SystemExit("Error: Either access token or refresh token + client ID" +
-                         "+ client secret + Checkin URL are expected")
+        raise SystemExit("Error: Either access token or refresh token + client ID"
+                         + "+ client secret + Checkin URL are expected")
 
 
 def token_list_vos(checkin_access_token, checkin_url):
@@ -218,7 +218,7 @@ def check(
 
     try:
         payload = jwt.decode(checkin_access_token, verify=False)
-    except:
+    except jwt.exceptions.InvalidTokenError:
         raise SystemExit("Error: Invalid access token.")
 
     expiration_timestamp = int(payload['exp'])

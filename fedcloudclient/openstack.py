@@ -3,7 +3,6 @@ import os
 from distutils.spawn import find_executable
 
 import click
-import openstackclient.shell
 import subprocess
 
 from fedcloudclient.checkin import get_access_token
@@ -74,7 +73,7 @@ def fedcloud_openstack_full(
             try:
                 json_object = json.loads(result_str)
                 return error_code, json_object
-            except ValueError as e:
+            except ValueError:
                 return error_code, result_str
         else:
             return error_code, result_str
@@ -289,4 +288,3 @@ def openstack_int(
     my_env["OS_PROJECT_ID"] = project_id
 
     subprocess.run(OPENSTACK_CLIENT, env=my_env)
-
