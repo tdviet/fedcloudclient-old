@@ -1,13 +1,13 @@
 import json
 import os
 from pathlib import Path
-from urllib.request import urlopen
+from urllib.request import urlopen, Request
 
 import click
 import yaml
 
 # Default site configs from GitHub
-default_site_configs = [
+default_site_configs = (
     "https://raw.githubusercontent.com/EGI-Foundation/fedcloud-catchall-operations/master/sites/100IT.yaml",
     "https://raw.githubusercontent.com/EGI-Foundation/fedcloud-catchall-operations/master/sites/BIFI.yaml",
     "https://raw.githubusercontent.com/EGI-Foundation/fedcloud-catchall-operations/master/sites/CESGA.yaml",
@@ -30,7 +30,7 @@ default_site_configs = [
     "https://raw.githubusercontent.com/EGI-Foundation/fedcloud-catchall-operations/master/sites/UA-BITP.yaml",
     "https://raw.githubusercontent.com/EGI-Foundation/fedcloud-catchall-operations/master/sites/UNIV-LILLE.yaml",
     "https://raw.githubusercontent.com/EGI-Foundation/fedcloud-catchall-operations/master/sites/fedcloud.srce.hr.yaml",
-]
+)
 
 site_config_data = []
 
@@ -63,9 +63,10 @@ def read_default_site_config():
     """
     site_config_data.clear()
     for filename in default_site_configs:
-        yaml_file = urlopen(filename)
-        site_info = yaml.safe_load(yaml_file)
-        site_config_data.append(site_info)
+        req = Request(filename)
+        with urlopen(req) as yaml_file:
+            site_info = yaml.safe_load(yaml_file)
+            site_config_data.append(site_info)
 
 
 def read_local_site_config(config_dir):
