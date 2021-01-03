@@ -63,8 +63,13 @@ def read_default_site_config():
     """
     site_config_data.clear()
     for filename in default_site_configs:
-        req = Request(filename)
-        with urlopen(req) as yaml_file:
+        if filename.lower().startswith('http'):
+            req = Request(filename)
+        else:
+            raise ValueError from None
+
+        # URLs already checked, so ignore bandit test
+        with urlopen(req) as yaml_file:       # nosec
             site_info = yaml.safe_load(yaml_file)
             site_config_data.append(site_info)
 

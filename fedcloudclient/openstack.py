@@ -3,7 +3,9 @@ import os
 from distutils.spawn import find_executable
 
 import click
-import subprocess
+
+# Subprocess is required for invoking openstack client, so ignored bandit check
+import subprocess       # nosec
 
 from fedcloudclient.checkin import get_access_token
 from fedcloudclient.sites import find_endpoint_and_project_id, list_sites
@@ -60,7 +62,8 @@ def fedcloud_openstack_full(
         options = options + ("--format", "json")
 
     # Calling openstack client as subprocess, caching stdout/stderr
-    completed = subprocess.run((OPENSTACK_CLIENT,) + openstack_command + options,
+    # Ignore bandit warning
+    completed = subprocess.run((OPENSTACK_CLIENT,) + openstack_command + options,   # nosec
                                stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     error_code = completed.returncode
@@ -287,4 +290,6 @@ def openstack_int(
     my_env["OS_ACCESS_TOKEN"] = access_token
     my_env["OS_PROJECT_ID"] = project_id
 
-    subprocess.run(OPENSTACK_CLIENT, env=my_env)
+    # Calling Openstack client as subprocess
+    # Ignore bandit warning
+    subprocess.run(OPENSTACK_CLIENT, env=my_env)        # nosec
