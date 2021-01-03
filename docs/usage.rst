@@ -198,6 +198,8 @@ remove sites they do not have access, and so on.
 
 * **"fedcloud site show-all"** : Show configurations of all sites.
 
+|
+
 * **"fedcloud site show-project-id --site <SITE> --vo <VO>"**: show the project ID of the VO on the site.
 
 ::

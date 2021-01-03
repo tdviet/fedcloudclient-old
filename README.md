@@ -1,36 +1,14 @@
 FedCloud client: Command-line client and library for EGI Federated Cloud
 ========================================================================
 
-*fedcloud* command-line client is based on
-[egicli](https://github.com/EGI-Foundation/egicli), a simple
-command-line interface and library for interacting with some of the
-services of EGI. The *fedcloud* command-line client extends the
-functionalities for interaction directly with Openstack sites in EGI
-Federated Cloud and perform commands on sites in the same way as the
-local in-site *openstack* client.
+**fedcloudclient** is a command-line client and high-level Python package for interaction with EGI Federated Cloud.
+This package is an extension of the [egicli] (https://github.com/EGI-Foundation/egicli) for Openstack commands.
 
-*fedcloud* client uses the same Openstack commands and options as
-*openstack* client. It uses site IDs and VOs for setting site/project
-that greatly improve user experiences and virtually makes EGI Federated
-Cloud look like single unified Cloud.
-
-Example of using *openstack* client for listing VMs in a project in a
-site:
-
-    openstack server list -os-auth-url SITE_ENDPOINT --os-project-id PROJECT_ID -os-access-toke ACCESS_TOKEN
-    --os-auth-type v3oidcaccesstoken --os-protocol openid --os-identity-provider egi.eu
-
-With *fedcloud* client:
-
-    fedcloud openstack server list --site SITE_ID --vo VO --checkin-access-token ACCESS_TOKEN
-
-The full set of *openstack* client commands is described
-[here](https://docs.openstack.org/python-openstackclient/latest/cli/command-list.html).
-
-Beside using as command-line client, fedcloud client can be used as
-development library for developers of tools and services for EGI
-Federated Cloud. See the demo code [*"demo.py"*](https://github.com/tdviet/fedcloudclient/blob/fedcloud-client/examples/demo.py)
-to see how the library is used.
+The aim here was to create a simple client which would allow users to perform the various Openstack operations 
+in EGI Federated Cloud. Four modules are included: **fedcloudclient.checkin** for operation with EGI CheckIn like
+getting tokens, **fedcloudclient.endpoint** for searching endpoints via GOCDB, getting unscoped/scoped token from
+Keystone, **fedcloudclient.sites** manages site configuration and finally **fedcloudclient.openstack** for
+performing Openstack operations.
 
 The full documentation, including installation, usage and API description is available 
 at [readthedocs.io](https://fedcloudclient.readthedocs.io/)
