@@ -29,12 +29,13 @@ Some sites use certificates issued by national certificate authorities that are 
 OS distribution. If you receive error message *"SSL exception connecting to https:// ..."*,
 follow `instructions <https://github.com/tdviet/python-requests-bundle-certs/blob/main/docs/Install_certificates.md>`_
 for installing EGI Core Trust Anchor certificates and add them to the certificate bundle of Python requests. For quick
-test in virtual environment, just execute the following commands
+test in virtual environment, just execute the following commands. See this
+`README.md <https://github.com/tdviet/python-requests-bundle-certs#usage>`_ for more details.
 
 ::
 
     $ wget https://raw.githubusercontent.com/tdviet/python-requests-bundle-certs/main/scripts/install_certs.sh
-    $ source install_certs.sh
+    $ bash install_certs.sh
 
 Using fedcloudclient via Docker container:
 ******************************************

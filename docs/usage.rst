@@ -214,7 +214,7 @@ fedcloud openstack commands
   Openstack command on the site and VO. Examples of Openstack commands are *"image list"*, *"server list"* and can be used
   with additional options for the commands, e.g. *"image list --long"*, *"server list --format json"*. The list of all
   Openstack commands, and their parameters/usages are available
-`here <https://docs.openstack.org/python-openstackclient/latest/cli/command-list.html>`_.
+  `here <https://docs.openstack.org/python-openstackclient/latest/cli/command-list.html>`_.
 
 ::
 
@@ -227,8 +227,10 @@ fedcloud openstack commands
     ...
 
 * **"fedcloud openstack-int --site <SITE> --vo <VO> --checkin-access-token <ACCESS_TOKEN>"** : Call Openstack client without
-  command, so users can work interactively. OIDC authentication is done only once at the beginning, then the keystone
-  token is cached and will be used for successive commands without authentication via CheckIn again.
+  command, so users can work with Openstack site in interactive mode. This is useful when users need to perform multiple
+  commands successively. For example, users may need get list of images, list of flavors, list of networks before
+  creating a VM. OIDC authentication is done only once at the
+  beginning, then the keystone token is cached and will be used for successive commands without authentication via CheckIn again.
 
 ::
 
