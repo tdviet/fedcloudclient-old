@@ -7,7 +7,7 @@ import click
 # Subprocess is required for invoking openstack client, so ignored bandit check
 import subprocess       # nosec
 
-from fedcloudclient.checkin import get_access_token
+from fedcloudclient.checkin import get_access_token, DEFAULT_CHECKIN_URL
 from fedcloudclient.sites import find_endpoint_and_project_id, list_sites
 
 DEFAULT_PROTOCOL = "openid"
@@ -154,7 +154,7 @@ def check_openstack_client_installation():
     "--checkin-url",
     help="Check-in OIDC URL",
     required=True,
-    default=lambda: os.environ.get("CHECKIN_OIDC_URL", "https://aai.egi.eu/oidc"),
+    default=lambda: os.environ.get("CHECKIN_OIDC_URL", DEFAULT_CHECKIN_URL),
 )
 @click.option(
     "--site",
@@ -241,7 +241,7 @@ def openstack(
     "--checkin-url",
     help="Check-in OIDC URL",
     required=True,
-    default=lambda: os.environ.get("CHECKIN_OIDC_URL", "https://aai.egi.eu/oidc"),
+    default=lambda: os.environ.get("CHECKIN_OIDC_URL", DEFAULT_CHECKIN_URL),
 )
 @click.option(
     "--site",

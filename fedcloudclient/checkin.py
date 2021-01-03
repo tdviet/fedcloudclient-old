@@ -10,6 +10,8 @@ import jwt
 from tabulate import tabulate
 import requests
 
+DEFAULT_CHECKIN_URL = "https://aai.egi.eu/oidc"
+
 
 def oidc_discover(checkin_url):
     """
@@ -178,7 +180,7 @@ def token():
     "--checkin-url",
     help="Check-in OIDC URL",
     required=True,
-    default=lambda: os.environ.get("CHECKIN_OIDC_URL", "https://aai.egi.eu/oidc"),
+    default=lambda: os.environ.get("CHECKIN_OIDC_URL", DEFAULT_CHECKIN_URL),
 )
 def refresh(
         checkin_client_id,
@@ -255,7 +257,7 @@ def check(
 @click.option(
     "--checkin-url",
     help="Check-in OIDC URL",
-    default=lambda: os.environ.get("CHECKIN_OIDC_URL", "https://aai.egi.eu/oidc"),
+    default=lambda: os.environ.get("CHECKIN_OIDC_URL", DEFAULT_CHECKIN_URL),
 )
 def list_vos(
         checkin_client_id,

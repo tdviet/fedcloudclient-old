@@ -7,7 +7,7 @@ import click
 import yaml
 
 # Default site configs from GitHub
-default_site_configs = (
+DEFAULT_SITE_CONFIGS = (
     "https://raw.githubusercontent.com/EGI-Foundation/fedcloud-catchall-operations/master/sites/100IT.yaml",
     "https://raw.githubusercontent.com/EGI-Foundation/fedcloud-catchall-operations/master/sites/BIFI.yaml",
     "https://raw.githubusercontent.com/EGI-Foundation/fedcloud-catchall-operations/master/sites/CESGA.yaml",
@@ -32,9 +32,9 @@ default_site_configs = (
     "https://raw.githubusercontent.com/EGI-Foundation/fedcloud-catchall-operations/master/sites/fedcloud.srce.hr.yaml",
 )
 
-site_config_data = []
+LOCAL_CONFIG_DIR = ".fedcloud-site-config/"
 
-local_config_dir = ".fedcloud-site-config/"
+site_config_data = []
 
 
 def read_site_config():
@@ -47,7 +47,7 @@ def read_site_config():
     """
     if len(site_config_data) > 0:
         return
-    config_dir = Path.home() / local_config_dir
+    config_dir = Path.home() / LOCAL_CONFIG_DIR
     if config_dir.exists():
         read_local_site_config(config_dir)
     else:
@@ -62,7 +62,7 @@ def read_default_site_config():
     :return: None
     """
     site_config_data.clear()
-    for filename in default_site_configs:
+    for filename in DEFAULT_SITE_CONFIGS:
         if filename.lower().startswith('http'):
             req = Request(filename)
         else:
@@ -228,7 +228,7 @@ def save_config():
     Overwrite local configs if exist
     """
     read_default_site_config()
-    config_dir = Path.home() / local_config_dir
+    config_dir = Path.home() / LOCAL_CONFIG_DIR
     print("Saving site configs to directory %s" % config_dir)
     save_site_config(config_dir)
 

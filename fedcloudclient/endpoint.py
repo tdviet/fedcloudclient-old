@@ -11,8 +11,7 @@ from six.moves.urllib import parse
 import requests
 from tabulate import tabulate
 
-from fedcloudclient.checkin import refresh_access_token
-from fedcloudclient.checkin import get_access_token
+from fedcloudclient.checkin import refresh_access_token, get_access_token, DEFAULT_CHECKIN_URL
 
 GOCDB_PUBLICURL = "https://goc.egi.eu/gocdbpi/public/"
 
@@ -270,7 +269,7 @@ def endpoint():
     "--checkin-url",
     help="Check-in OIDC URL",
     required=True,
-    default=lambda: os.environ.get("CHECKIN_OIDC_URL", "https://aai.egi.eu/oidc"),
+    default=lambda: os.environ.get("CHECKIN_OIDC_URL", DEFAULT_CHECKIN_URL),
 )
 @click.option(
     "--site",
@@ -323,7 +322,7 @@ def projects(
     "--checkin-url",
     help="Check-in OIDC URL",
     required=True,
-    default=lambda: os.environ.get("CHECKIN_OIDC_URL", "https://aai.egi.eu/oidc"),
+    default=lambda: os.environ.get("CHECKIN_OIDC_URL", DEFAULT_CHECKIN_URL),
 )
 @click.option(
     "--site",
@@ -385,7 +384,7 @@ def token(
     "--checkin-url",
     help="Check-in OIDC URL",
     required=True,
-    default=lambda: os.environ.get("CHECKIN_OIDC_URL", "https://aai.egi.eu/oidc"),
+    default=lambda: os.environ.get("CHECKIN_OIDC_URL", DEFAULT_CHECKIN_URL),
 )
 @click.option(
     "--auth-file",
@@ -461,7 +460,7 @@ def ec3_refresh(
     "--checkin-url",
     help="Check-in OIDC URL",
     required=True,
-    default=lambda: os.environ.get("CHECKIN_OIDC_URL", "https://aai.egi.eu/oidc"),
+    default=lambda: os.environ.get("CHECKIN_OIDC_URL", DEFAULT_CHECKIN_URL),
 )
 @click.option(
     "--site", help="Name of the site", default=lambda: os.environ.get("EGI_SITE", None)
@@ -581,7 +580,7 @@ def list(service_type, production, monitored, site):
     "--checkin-url",
     help="Check-in OIDC URL",
     required=True,
-    default=lambda: os.environ.get("CHECKIN_OIDC_URL", "https://aai.egi.eu/oidc"),
+    default=lambda: os.environ.get("CHECKIN_OIDC_URL", DEFAULT_CHECKIN_URL),
 )
 @click.option(
     "--site",
