@@ -16,7 +16,7 @@ at [readthedocs.io](https://fedcloudclient.readthedocs.io/)
 Quick start
 -----------
 
--   Install FedCloud client is via *pip*:
+-   Install FedCloud client via *pip*:
 
 <!-- -->
 
