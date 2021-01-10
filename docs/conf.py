@@ -32,6 +32,8 @@ release = '0.0.2-dev15'
 extensions = ['sphinx.ext.todo', 'sphinx.ext.viewcode', 'sphinx.ext.autodoc',
               ]
 
+smartquotes = False
+
 source_suffix = ['.rst', '.md']
 
 # Add any paths that contain templates here, relative to this directory.
