@@ -29,19 +29,19 @@ Most of fedcloud options, including options for tokens can be set via environmen
 +-----------------------------+---------------------------------+
 |     Environment variables   |   Command-line options          |
 +=============================+=================================+
-|    CHECKIN_ACCESS_TOKEN     |   --checkin-access-token        |
+|    CHECKIN_ACCESS_TOKEN     |   ``--checkin-access-token``    |
 +-----------------------------+---------------------------------+
-|    CHECKIN_REFRESH_TOKEN    |   --checkin-refresh-token       |
+|    CHECKIN_REFRESH_TOKEN    |   ``--checkin-refresh-token``   |
 +-----------------------------+---------------------------------+
-|    CHECKIN_CLIENT_ID        |   --checkin-client-id           |
+|    CHECKIN_CLIENT_ID        |   ``--checkin-client-id``       |
 +-----------------------------+---------------------------------+
-|    CHECKIN_CLIENT_SECRET    |   --checkin-client-secret       |
+|    CHECKIN_CLIENT_SECRET    |   ``--checkin-client-secret``   |
 +-----------------------------+---------------------------------+
-|    CHECKIN_URL              |   --checkin-url                 |
+|    CHECKIN_URL              |   ``--checkin-url``             |
 +-----------------------------+---------------------------------+
-|    EGI_SITE                 |   --site                        |
+|    EGI_SITE                 |   ``--site``                    |
 +-----------------------------+---------------------------------+
-|    EGI_VO                   |   --vo                          |
+|    EGI_VO                   |   ``--vo``                      |
 +-----------------------------+---------------------------------+
 
 For convenience, always set the frequently used options like tokens via environment variables, that can save a lot of time.

@@ -122,8 +122,8 @@ def get_access_token(
                              + " Get new access token before continuing on operation")
         return checkin_access_token
     else:
-        raise SystemExit("Error: Either access token or refresh token + client ID"
-                         + "+ client secret + Checkin URL are expected")
+        raise SystemExit("Error: Either access token OR refresh token + client ID"
+                         + " + client secret are expected")
 
 
 def token_list_vos(checkin_access_token, checkin_url):
