@@ -17,3 +17,6 @@
 - Parallel all-sites Openstack operations
     + multithreading, each thread for a site
     + Openstack operations are already isolated in a function, creating a thread should be easy
+
+- oidc-agent integration
+    + get access token from oidc-agent
