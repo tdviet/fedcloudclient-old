@@ -1,7 +1,7 @@
 Using fedcloudclient as command-line client
 ===========================================
 
-**fedcloudclient** has four groups of commands: **"fedcloud token"** for interactions with EGI CheckIn and access tokens,
+**fedcloudclient** has four groups of commands: **"fedcloud token"** for interactions with EGI Check-in and access tokens,
 **"fedcloud endpoint"** for interactions with GOCDB (and site endpoints according to GOCDB), **"fedcloud site"** for
 manipulations with site configurations, and **"fedcloud openstack"** or **"fedcloud openstack-int"** for performing
 Openstack commands on sites.
@@ -15,10 +15,10 @@ CheckIn client ID and secret) to generate access token on the fly. Therefore, in
 *"--checkin-access-token"* can be replaced by the combination of *"--checkin-refresh-token"*, *"--checkin-client-id"*
 and *"--checkin-client-secret"*.
 
-Users of EGI CheckIn can get all information needed for obtaining refresh and access tokens from `CheckIn FedCloud
+Users of EGI Check-in can get all information needed for obtaining refresh and access tokens from `CheckIn FedCloud
 client <https://aai.egi.eu/fedcloud/>`_.
 
-The default OIDC identity provider is EGI CheckIn (https://aai.egi.eu/oidc). Users can set other OIDC identity
+The default OIDC identity provider is EGI Check-in (https://aai.egi.eu/oidc). Users can set other OIDC identity
 provider via option *"--checkin-url"*.
 
 Environment variables
@@ -83,7 +83,7 @@ fedcloud token commands
     Access token expires in 3571 seconds
 
 
-* **"fedcloud token list-vos --checkin-access-token <ACCESS_TOKEN>"** : Print the list of VO memberships according to the EGI CheckIn
+* **"fedcloud token list-vos --checkin-access-token <ACCESS_TOKEN>"** : Print the list of VO memberships according to the EGI Check-in
 
 ::
 

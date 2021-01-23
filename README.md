@@ -5,7 +5,7 @@ FedCloud client: Command-line client and library for EGI Federated Cloud
 This package is an extension of the [egicli](https://github.com/EGI-Foundation/egicli) for Openstack commands.
 
 The aim here was to create a simple client which would allow users to perform the various Openstack operations 
-in EGI Federated Cloud. Four modules are included: **fedcloudclient.checkin** for operation with EGI CheckIn like
+in EGI Federated Cloud. Four modules are included: **fedcloudclient.checkin** for operation with EGI Check-in like
 getting tokens, **fedcloudclient.endpoint** for searching endpoints via GOCDB, getting unscoped/scoped token from
 Keystone, **fedcloudclient.sites** manages site configuration and finally **fedcloudclient.openstack** for
 performing Openstack operations.
@@ -165,14 +165,14 @@ FAQ
 > with client ID and client secret), an access token will be generated
 > on the fly from the refresh token and client ID/secret.
 >
-> Refresh tokens have long lifetime (one year in EGI CheckIn), so they
+> Refresh tokens have long lifetime (one year in EGI Check-in), so they
 > should be securely protected. In secured environment, e.g. private
 > computers, refresh tokens may be conveniently specified via environment
 > variables *CHECKIN\_REFRESH\_TOKEN*, *CHECKIN\_CLIENT\_ID*,
 > *CHECKIN\_CLIENT\_SECRET*; so users don't have to set token for
 > *fedcloud* client via command-line parameters.
 >
-> Access tokens have short lifetime (one hour in EGI CheckIn), so they
+> Access tokens have short lifetime (one hour in EGI Check-in), so they
 > have lower security constraints. However, they have to be refreshed
 > frequently, that may be inconvenient for some users. In shared
 > environment, e.g. VMs in Cloud, access tokens should be used instead

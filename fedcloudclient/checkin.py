@@ -128,7 +128,7 @@ def get_access_token(
 
 def token_list_vos(checkin_access_token, checkin_url):
     """
-    List VO memberships in EGI CheckIn
+    List VO memberships in EGI Check-in
 
     :param checkin_access_token:
     :param checkin_url:

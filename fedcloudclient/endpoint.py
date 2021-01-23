@@ -33,7 +33,7 @@ configure front (
       changed_when: false
       failed_when: docker_installed.rc not in [0,1]
       register: docker_installed
-    - name: local install of fedcloudclient
+    - name: local install of egicli
       block:
       - name: Create dir /usr/local/ec3/
         file: path=/usr/local/ec3/ state=directory
@@ -41,24 +41,24 @@ configure front (
         package:
           name: git
           state: present
-      - name: install fedcloudclient
+      - name: install egicli
         pip:
           name:
           - git+http://github.com/enolfc/egicli@ec3
       - cron:
           name: "refresh token"
           minute: "*/5"
-          job: "[ -f /usr/local/ec3/auth.dat ] && /usr/local/bin/fedcloudclient endpoint ec3-refresh --checkin-client-id {{ CLIENT_ID }} --checkin-client-secret {{ CLIENT_SECRET }} --checkin-refresh-token {{ REFRESH_TOKEN }} --auth-file /usr/local/ec3/auth.dat &> /var/log/refresh.log"
+          job: "[ -f /usr/local/ec3/auth.dat ] && /usr/local/bin/egicli endpoint ec3-refresh --checkin-client-id {{ CLIENT_ID }} --checkin-client-secret {{ CLIENT_SECRET }} --checkin-refresh-token {{ REFRESH_TOKEN }} --auth-file /usr/local/ec3/auth.dat &> /var/log/refresh.log"
           user: root
           cron_file: refresh_token
           state: present
       when: docker_installed.rc not in [ 0 ]
-    - name: local install of fedcloudclient
+    - name: local install of egicli
       block:
       - cron:
           name: "refresh token"
           minute: "*/5"
-          job: "[ -f /usr/local/ec3/auth.dat ] && docker run -v /usr/local/ec3/auth.dat:/usr/local/ec3/auth.dat egifedcloud/fedcloudclient fedcloudclient endpoint ec3-refresh --checkin-client-id {{ CLIENT_ID }} --checkin-client-secret {{ CLIENT_SECRET }} --checkin-refresh-token {{ REFRESH_TOKEN }} --auth-file /usr/local/ec3/auth.dat &> /var/log/refresh.log"
+          job: "[ -f /usr/local/ec3/auth.dat ] && docker run -v /usr/local/ec3/auth.dat:/usr/local/ec3/auth.dat egifedcloud/egicli egicli endpoint ec3-refresh --checkin-client-id {{ CLIENT_ID }} --checkin-client-secret {{ CLIENT_SECRET }} --checkin-refresh-token {{ REFRESH_TOKEN }} --auth-file /usr/local/ec3/auth.dat &> /var/log/refresh.log"
           user: root
           cron_file: refresh_token
           state: present

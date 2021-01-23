@@ -96,7 +96,7 @@ def fedcloud_openstack(
     """
     Simplified version of fedcloud_openstack_full() function using
     default EGI setting for identity provider and protocols
-    Call openstack client with default options for EGI Checkin
+    Call openstack client with default options for EGI Check-in
 
     :param checkin_access_token: Checkin access token. Passed to openstack client as --os-access-token
     :param site: site ID in GOCDB
