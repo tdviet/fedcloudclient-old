@@ -11,7 +11,7 @@ Authentication
 
 Many **fedcloud** commands need access token for authentication. Users can choose whether to provide access token
 directly (via option *"--checkin-access-token"*), or using refresh token (must be provided together with
-CheckIn client ID and secret) to generate access token on the fly. Therefore, in most cases, the option
+Check-in client ID and secret) to generate access token on the fly. Therefore, in most cases, the option
 *"--checkin-access-token"* can be replaced by the combination of *"--checkin-refresh-token"*, *"--checkin-client-id"*
 and *"--checkin-client-secret"*.
 
@@ -19,7 +19,11 @@ Users of EGI Check-in can get all information needed for obtaining refresh and a
 client <https://aai.egi.eu/fedcloud/>`_.
 
 The default OIDC identity provider is EGI Check-in (https://aai.egi.eu/oidc). Users can set other OIDC identity
-provider via option *"--checkin-url"*.
+provider via option *"--checkin-url"*. Remember to set identity provider's name *"--checkin-provider"* accordingly
+for Openstack commands.
+
+The default protocol is *"openid"*. Users can change default protocol via option *"--checkin-protocol"*. However,
+sites may have protocol fixedly defined in site configuration, e.g. *"oidc"* for RECAS-BARI.
 
 Environment variables
 *********************
@@ -231,8 +235,8 @@ fedcloud openstack commands
 * **"fedcloud openstack-int --site <SITE> --vo <VO> --checkin-access-token <ACCESS_TOKEN>"** : Call Openstack client without
   command, so users can work with Openstack site in interactive mode. This is useful when users need to perform multiple
   commands successively. For example, users may need get list of images, list of flavors, list of networks before
-  creating a VM. OIDC authentication is done only once at the
-  beginning, then the keystone token is cached and will be used for successive commands without authentication via CheckIn again.
+  creating a VM. OIDC authentication is done only once at the beginning, then the keystone token is cached and will
+  be used for successive commands without authentication via CheckIn again.
 
 ::
 

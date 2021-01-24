@@ -140,24 +140,25 @@ def find_endpoint_and_project_id(site_name, vo):
     Return Keystone endpoint and project ID from site name and VO according to site configuration
 
     :param site_name: site ID in GOCDB
-    :param vo: VO name
+    :param vo: VO name. None if finding only site endpoint
 
-    :return: endpoint, project_id if the VO exist on the site, otherwise None, None
+    :return: endpoint, project_id, protocol if the VO exist on the site, otherwise None, None, None
     """
     site_info = find_site_data(site_name)
     if site_info is None:
-        return None, None
+        return None, None, None
 
+    protocol = site_info.get("protocol")
     # If only site name is given, return endpoint without project ID
     if vo is None:
-        return site_info["endpoint"], None
+        return site_info["endpoint"], None, protocol
 
     for vo_info in site_info["vos"]:
         if vo_info["name"] == vo:
-            return site_info["endpoint"], vo_info["auth"]["project_id"]
+            return site_info["endpoint"], vo_info["auth"]["project_id"], protocol
 
     # Return None, None if VO not found
-    return None, None
+    return None, None, None
 
 
 @click.group()
@@ -203,7 +204,7 @@ def show_project_id(site, vo):
     """
     Printing Keystone endpoint and project ID of the VO on the site
     """
-    endpoint, project_id = find_endpoint_and_project_id(site, vo)
+    endpoint, project_id, protocol = find_endpoint_and_project_id(site, vo)
     if endpoint:
         print(" Endpoint : %s \n Project ID : %s" % (endpoint, project_id))
     else:

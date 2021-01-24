@@ -43,13 +43,16 @@ def fedcloud_openstack_full(
     :return: error code, result or error message
     """
 
-    endpoint, project_id = find_endpoint_and_project_id(site, vo)
+    endpoint, project_id, protocol = find_endpoint_and_project_id(site, vo)
     if endpoint is None:
         return 1, ("VO %s not found on site %s" % (vo, site))
 
+    if protocol is None:
+        protocol = checkin_protocol
+
     options = ("--os-auth-url", endpoint,
                "--os-auth-type", checkin_auth_type,
-               "--os-protocol", checkin_protocol,
+               "--os-protocol", protocol,
                "--os-identity-provider", checkin_identity_provider,
                "--os-access-token", checkin_access_token
                )
@@ -157,6 +160,24 @@ def check_openstack_client_installation():
     default=lambda: os.environ.get("CHECKIN_OIDC_URL", DEFAULT_CHECKIN_URL),
 )
 @click.option(
+    "--checkin-protocol",
+    help="Check-in protocol",
+    required=True,
+    default=lambda: os.environ.get("CHECKIN_PROTOCOL", DEFAULT_PROTOCOL),
+)
+@click.option(
+    "--checkin-auth-type",
+    help="Check-in authentication type",
+    required=True,
+    default=lambda: os.environ.get("CHECKIN_AUTH_TYPE", DEFAULT_AUTH_TYPE),
+)
+@click.option(
+    "--checkin-provider",
+    help="Check-in identity provider",
+    required=True,
+    default=lambda: os.environ.get("CHECKIN_PROVIDER", DEFAULT_IDENTITY_PROVIDER),
+)
+@click.option(
     "--site",
     help="Name of the site",
     required=True,
@@ -178,6 +199,9 @@ def openstack(
         checkin_refresh_token,
         checkin_access_token,
         checkin_url,
+        checkin_protocol,
+        checkin_auth_type,
+        checkin_provider,
         site,
         vo,
         openstack_command
@@ -202,8 +226,11 @@ def openstack(
         sites = [site]
     for current_site in sites:
         print("Site: %s, VO: %s" % (current_site, vo))
-        error_code, result = fedcloud_openstack(
+        error_code, result = fedcloud_openstack_full(
             access_token,
+            checkin_protocol,
+            checkin_auth_type,
+            checkin_provider,
             current_site,
             vo,
             openstack_command,
@@ -244,6 +271,24 @@ def openstack(
     default=lambda: os.environ.get("CHECKIN_OIDC_URL", DEFAULT_CHECKIN_URL),
 )
 @click.option(
+    "--checkin-protocol",
+    help="Check-in protocol",
+    required=True,
+    default=lambda: os.environ.get("CHECKIN_PROTOCOL", DEFAULT_PROTOCOL),
+)
+@click.option(
+    "--checkin-auth-type",
+    help="Check-in authentication type",
+    required=True,
+    default=lambda: os.environ.get("CHECKIN_AUTH_TYPE", DEFAULT_AUTH_TYPE),
+)
+@click.option(
+    "--checkin-provider",
+    help="Check-in identity provider",
+    required=True,
+    default=lambda: os.environ.get("CHECKIN_PROVIDER", DEFAULT_IDENTITY_PROVIDER),
+)
+@click.option(
     "--site",
     help="Name of the site",
     required=True,
@@ -261,6 +306,9 @@ def openstack_int(
         checkin_refresh_token,
         checkin_access_token,
         checkin_url,
+        checkin_protocol,
+        checkin_auth_type,
+        checkin_provider,
         site,
         vo
 ):
@@ -278,15 +326,17 @@ def openstack_int(
                                     checkin_client_secret,
                                     checkin_url)
 
-    endpoint, project_id = find_endpoint_and_project_id(site, vo)
+    endpoint, project_id, protocol = find_endpoint_and_project_id(site, vo)
     if endpoint is None:
         raise SystemExit("Error: VO %s not found on site %s" % (vo, site))
 
+    if protocol is None:
+        protocol = checkin_protocol
     my_env = os.environ.copy()
     my_env["OS_AUTH_URL"] = endpoint
-    my_env["OS_AUTH_TYPE"] = DEFAULT_AUTH_TYPE
-    my_env["OS_PROTOCOL"] = DEFAULT_PROTOCOL
-    my_env["OS_IDENTITY_PROVIDER"] = DEFAULT_IDENTITY_PROVIDER
+    my_env["OS_AUTH_TYPE"] = checkin_auth_type
+    my_env["OS_PROTOCOL"] = protocol
+    my_env["OS_IDENTITY_PROVIDER"] = checkin_provider
     my_env["OS_ACCESS_TOKEN"] = access_token
     my_env["OS_PROJECT_ID"] = project_id
 

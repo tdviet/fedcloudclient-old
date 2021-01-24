@@ -172,7 +172,7 @@ def token():
 )
 @click.option(
     "--checkin-refresh-token",
-    help="Check-in client id",
+    help="Check-in refresh token",
     required=True,
     default=lambda: os.environ.get("CHECKIN_REFRESH_TOKEN", None),
 )
@@ -202,35 +202,55 @@ def refresh(
 
 @token.command()
 @click.option(
+    "--checkin-refresh-token",
+    help="Check-in refresh token",
+    default=lambda: os.environ.get("CHECKIN_REFRESH_TOKEN", None),
+)
+@click.option(
     "--checkin-access-token",
     help="Check-in access token",
-    required=True,
     default=lambda: os.environ.get("CHECKIN_ACCESS_TOKEN", None),
 )
 def check(
-        checkin_access_token,
+        checkin_refresh_token,
+        checkin_access_token
 ):
     """
-    CLI command for printing validity of access token
+    CLI command for printing validity of access or refresh token
     """
 
-    if checkin_access_token is None:
-        print("Checkin access token is required")
-        exit(1)
+    if checkin_refresh_token:
+        try:
+            payload = jwt.decode(checkin_refresh_token, verify=False)
+        except jwt.exceptions.InvalidTokenError:
+            raise SystemExit("Error: Invalid refresh token.")
 
-    try:
-        payload = jwt.decode(checkin_access_token, verify=False)
-    except jwt.exceptions.InvalidTokenError:
-        raise SystemExit("Error: Invalid access token.")
+        expiration_timestamp = int(payload['exp'])
+        expiration_time = datetime.utcfromtimestamp(expiration_timestamp).strftime('%Y-%m-%d %H:%M:%S')
+        print("Refresh token is valid to %s UTC" % expiration_time)
+        current_timestamp = int(time.time())
+        if current_timestamp < expiration_timestamp:
+            print("Refresh token expires in %d days" % ((expiration_timestamp - current_timestamp)//(24*3600)))
+        else:
+            print("Refresh token has expired")
 
-    expiration_timestamp = int(payload['exp'])
-    expiration_time = datetime.utcfromtimestamp(expiration_timestamp).strftime('%Y-%m-%d %H:%M:%S')
-    print("Access token is valid to %s UTC" % expiration_time)
-    current_timestamp = int(time.time())
-    if current_timestamp < expiration_timestamp:
-        print("Access token expires in %d seconds" % (expiration_timestamp - current_timestamp))
+    elif checkin_access_token:
+        try:
+            payload = jwt.decode(checkin_access_token, verify=False)
+        except jwt.exceptions.InvalidTokenError:
+            raise SystemExit("Error: Invalid access token.")
+
+        expiration_timestamp = int(payload['exp'])
+        expiration_time = datetime.utcfromtimestamp(expiration_timestamp).strftime('%Y-%m-%d %H:%M:%S')
+        print("Access token is valid to %s UTC" % expiration_time)
+        current_timestamp = int(time.time())
+        if current_timestamp < expiration_timestamp:
+            print("Access token expires in %d seconds" % (expiration_timestamp - current_timestamp))
+        else:
+            print("Access token has expired")
     else:
-        print("Access token has expired")
+        print("Checkin access token or refresh token required")
+        exit(1)
 
 
 @token.command()
