@@ -193,17 +193,15 @@ remove sites they do not have access, and so on.
 ::
 
     $ fedcloud site show --site IISAS-FedCloud
-    {
-      "endpoint": "https://cloud.ui.savba.sk:5000/v3/",
-      "gocdb": "IISAS-FedCloud",
-      "vos": [
-        {
-          "auth": {
-            "project_id": "a22bbffb007745b2934bf308b0a4d186"
-          },
-          "name": "covid19.eosc-synergy.eu"
-        },
-        ...
+    endpoint: https://cloud.ui.savba.sk:5000/v3/
+    gocdb: IISAS-FedCloud
+    vos:
+    - auth:
+        project_id: a22bbffb007745b2934bf308b0a4d186
+      name: covid19.eosc-synergy.eu
+    - auth:
+        project_id: 51f736d36ce34b9ebdf196cfcabd24ee
+      name: eosc-synergy.eu
 
 
 * **"fedcloud site show-all"** : Show configurations of all sites.
