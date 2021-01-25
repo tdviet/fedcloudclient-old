@@ -248,33 +248,34 @@ def endpoint():
 @click.option(
     "--checkin-client-id",
     help="Check-in client id",
-    default=lambda: os.environ.get("CHECKIN_CLIENT_ID", None),
+    envvar="CHECKIN_CLIENT_ID",
 )
 @click.option(
     "--checkin-client-secret",
     help="Check-in client secret",
-    default=lambda: os.environ.get("CHECKIN_CLIENT_SECRET", None),
+    envvar="CHECKIN_CLIENT_SECRET",
 )
 @click.option(
     "--checkin-refresh-token",
     help="Check-in refresh token",
-    default=lambda: os.environ.get("CHECKIN_REFRESH_TOKEN", None),
+    envvar="CHECKIN_REFRESH_TOKEN",
 )
 @click.option(
     "--checkin-access-token",
     help="Check-in access token",
-    default=lambda: os.environ.get("CHECKIN_ACCESS_TOKEN", None),
+    envvar="CHECKIN_ACCESS_TOKEN",
 )
 @click.option(
     "--checkin-url",
     help="Check-in OIDC URL",
-    required=True,
-    default=lambda: os.environ.get("CHECKIN_OIDC_URL", DEFAULT_CHECKIN_URL),
+    envvar="CHECKIN_OIDC_URL",
+    default=DEFAULT_CHECKIN_URL,
+    show_default=True,
 )
 @click.option(
     "--site",
     help="Name of the site",
-    default=lambda: os.environ.get("EGI_SITE", None),
+    envvar="EGI_SITE",
 )
 def projects(
         checkin_client_id,
@@ -301,40 +302,41 @@ def projects(
 @click.option(
     "--checkin-client-id",
     help="Check-in client id",
-    default=lambda: os.environ.get("CHECKIN_CLIENT_ID", None),
+    envvar="CHECKIN_CLIENT_ID",
 )
 @click.option(
     "--checkin-client-secret",
     help="Check-in client secret",
-    default=lambda: os.environ.get("CHECKIN_CLIENT_SECRET", None),
+    envvar="CHECKIN_CLIENT_SECRET",
 )
 @click.option(
     "--checkin-refresh-token",
     help="Check-in client id",
-    default=lambda: os.environ.get("CHECKIN_REFRESH_TOKEN", None),
+    envvar="CHECKIN_REFRESH_TOKEN",
 )
 @click.option(
     "--checkin-access-token",
     help="Check-in access token",
-    default=lambda: os.environ.get("CHECKIN_ACCESS_TOKEN", None),
+    envvar="CHECKIN_ACCESS_TOKEN",
 )
 @click.option(
     "--checkin-url",
     help="Check-in OIDC URL",
-    required=True,
-    default=lambda: os.environ.get("CHECKIN_OIDC_URL", DEFAULT_CHECKIN_URL),
+    envvar="CHECKIN_OIDC_URL",
+    default=DEFAULT_CHECKIN_URL,
+    show_default=True,
 )
 @click.option(
     "--site",
     help="Name of the site",
     required=True,
-    default=lambda: os.environ.get("EGI_SITE", None)
+    envvar="EGI_SITE",
 )
 @click.option(
     "--project-id",
     help="Project ID",
     required=True,
-    default=lambda: os.environ.get("OS_PROJECT_ID", None),
+    envvar="OS_PROJECT_ID",
 )
 def token(
         checkin_client_id,
@@ -366,31 +368,32 @@ def token(
     "--checkin-client-id",
     help="Check-in client id",
     required=True,
-    default=lambda: os.environ.get("CHECKIN_CLIENT_ID", None),
+    envvar="CHECKIN_CLIENT_ID",
 )
 @click.option(
     "--checkin-client-secret",
     help="Check-in client secret",
     required=True,
-    default=lambda: os.environ.get("CHECKIN_CLIENT_SECRET", None),
+    envvar="CHECKIN_CLIENT_SECRET",
 )
 @click.option(
     "--checkin-refresh-token",
-    help="Check-in client id",
+    help="Check-in refresh token",
     required=True,
-    default=lambda: os.environ.get("CHECKIN_REFRESH_TOKEN", None),
+    envvar="CHECKIN_REFRESH_TOKEN",
 )
 @click.option(
     "--checkin-url",
     help="Check-in OIDC URL",
-    required=True,
-    default=lambda: os.environ.get("CHECKIN_OIDC_URL", DEFAULT_CHECKIN_URL),
+    envvar="CHECKIN_OIDC_URL",
+    default=DEFAULT_CHECKIN_URL,
+    show_default=True,
 )
 @click.option(
     "--auth-file",
     help="Authorization file",
-    required=True,
     default="auth.dat",
+    show_default=True,
 )
 def ec3_refresh(
         checkin_client_id,
@@ -400,9 +403,6 @@ def ec3_refresh(
         auth_file,
 ):
     # Get the right endpoint from GOCDB
-    access_token = refresh_access_token(
-        checkin_client_id, checkin_client_secret, checkin_refresh_token, checkin_url
-    )
     auth_file_contents = []
     with open(auth_file, "r") as f:
         for raw_line in f.readlines():
@@ -439,49 +439,53 @@ def ec3_refresh(
 @click.option(
     "--checkin-client-id",
     help="Check-in client id",
-    default=lambda: os.environ.get("CHECKIN_CLIENT_ID", None),
+    envvar="CHECKIN_CLIENT_ID",
 )
 @click.option(
     "--checkin-client-secret",
     help="Check-in client secret",
-    default=lambda: os.environ.get("CHECKIN_CLIENT_SECRET", None),
+    envvar="CHECKIN_CLIENT_SECRET",
 )
 @click.option(
     "--checkin-refresh-token",
-    help="Check-in client id",
-    default=lambda: os.environ.get("CHECKIN_REFRESH_TOKEN", None),
+    help="Check-in refresh token",
+    envvar="CHECKIN_REFRESH_TOKEN",
 )
 @click.option(
     "--checkin-access-token",
     help="Check-in access token",
-    default=lambda: os.environ.get("CHECKIN_ACCESS_TOKEN", None),
+    envvar="CHECKIN_ACCESS_TOKEN",
 )
 @click.option(
     "--checkin-url",
     help="Check-in OIDC URL",
-    required=True,
-    default=lambda: os.environ.get("CHECKIN_OIDC_URL", DEFAULT_CHECKIN_URL),
+    envvar="CHECKIN_OIDC_URL",
+    default=DEFAULT_CHECKIN_URL,
+    show_default=True,
 )
 @click.option(
-    "--site", help="Name of the site", default=lambda: os.environ.get("EGI_SITE", None)
+    "--site",
+    help="Name of the site",
+    envvar="EGI_SITE",
+    required=True,
 )
 @click.option(
     "--project-id",
     help="Project ID",
     required=True,
-    default=lambda: os.environ.get("OS_PROJECT_ID", None),
+    envvar="OS_PROJECT_ID",
 )
 @click.option(
     "--auth-file",
     help="Authorization file",
-    required=True,
     default="auth.dat",
+    show_default=True,
 )
 @click.option(
     "--template-dir",
     help="EC3 templates dir",
-    required=True,
     default="./templates",
+    show_default=True,
 )
 @click.option("--force", is_flag=True, help="Force rewrite of files")
 def ec3(
@@ -540,12 +544,27 @@ def ec3(
 
 @endpoint.command()
 @click.option(
-    "--service-type", default="org.openstack.nova", help="Service type in GOCDB"
+    "--service-type",
+    default="org.openstack.nova",
+    help="Service type in GOCDB",
+    show_default=True,
 )
-@click.option("--production/--not-production", default=True, help="Production status")
-@click.option("--monitored/--not-monitored", default=True, help="Monitoring status")
 @click.option(
-    "--site", help="Name of the site", default=lambda: os.environ.get("EGI_SITE", None)
+    "--production/--not-production",
+    default=True,
+    help="Production status",
+    show_default=True,
+)
+@click.option(
+    "--monitored/--not-monitored",
+    default=True,
+    help="Monitoring status",
+    show_default=True,
+)
+@click.option(
+    "--site",
+    help="Name of the site",
+    envvar="EGI_SITE"
 )
 def list(service_type, production, monitored, site):
     """
@@ -559,40 +578,41 @@ def list(service_type, production, monitored, site):
 @click.option(
     "--checkin-client-id",
     help="Check-in client id",
-    default=lambda: os.environ.get("CHECKIN_CLIENT_ID", None),
+    envvar="CHECKIN_CLIENT_ID",
 )
 @click.option(
     "--checkin-client-secret",
     help="Check-in client secret",
-    default=lambda: os.environ.get("CHECKIN_CLIENT_SECRET", None),
+    envvar="CHECKIN_CLIENT_SECRET",
 )
 @click.option(
     "--checkin-refresh-token",
-    help="Check-in client id",
-    default=lambda: os.environ.get("CHECKIN_REFRESH_TOKEN", None),
+    help="Check-in refresh token",
+    envvar="CHECKIN_REFRESH_TOKEN",
 )
 @click.option(
     "--checkin-access-token",
     help="Check-in access token",
-    default=lambda: os.environ.get("CHECKIN_ACCESS_TOKEN", None),
+    envvar="CHECKIN_ACCESS_TOKEN",
 )
 @click.option(
     "--checkin-url",
     help="Check-in OIDC URL",
-    required=True,
-    default=lambda: os.environ.get("CHECKIN_OIDC_URL", DEFAULT_CHECKIN_URL),
+    envvar="CHECKIN_OIDC_URL",
+    default=DEFAULT_CHECKIN_URL,
+    show_default=True,
 )
 @click.option(
     "--site",
     help="Name of the site",
     required=True,
-    default=lambda: os.environ.get("EGI_SITE", None),
+    envvar="EGI_SITE",
 )
 @click.option(
     "--project-id",
     help="Project ID",
     required=True,
-    default=lambda: os.environ.get("OS_PROJECT_ID", None),
+    envvar="OS_PROJECT_ID",
 )
 def env(
         checkin_client_id,

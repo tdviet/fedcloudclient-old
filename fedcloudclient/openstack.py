@@ -136,57 +136,61 @@ def check_openstack_client_installation():
 @click.option(
     "--checkin-client-id",
     help="Check-in client id",
-    default=lambda: os.environ.get("CHECKIN_CLIENT_ID", None),
+    envvar="CHECKIN_CLIENT_ID",
 )
 @click.option(
     "--checkin-client-secret",
     help="Check-in client secret",
-    default=lambda: os.environ.get("CHECKIN_CLIENT_SECRET", None),
+    envvar="CHECKIN_CLIENT_SECRET",
 )
 @click.option(
     "--checkin-refresh-token",
     help="Check-in refresh token",
-    default=lambda: os.environ.get("CHECKIN_REFRESH_TOKEN", None),
+    envvar="CHECKIN_REFRESH_TOKEN",
 )
 @click.option(
     "--checkin-access-token",
     help="Check-in access token",
-    default=lambda: os.environ.get("CHECKIN_ACCESS_TOKEN", None),
+    envvar="CHECKIN_ACCESS_TOKEN",
 )
 @click.option(
     "--checkin-url",
     help="Check-in OIDC URL",
-    required=True,
-    default=lambda: os.environ.get("CHECKIN_OIDC_URL", DEFAULT_CHECKIN_URL),
+    envvar="CHECKIN_OIDC_URL",
+    default=DEFAULT_CHECKIN_URL,
+    show_default=True,
 )
 @click.option(
     "--checkin-protocol",
     help="Check-in protocol",
-    required=True,
-    default=lambda: os.environ.get("CHECKIN_PROTOCOL", DEFAULT_PROTOCOL),
+    envvar="CHECKIN_PROTOCOL",
+    default=DEFAULT_PROTOCOL,
+    show_default=True,
 )
 @click.option(
     "--checkin-auth-type",
     help="Check-in authentication type",
-    required=True,
-    default=lambda: os.environ.get("CHECKIN_AUTH_TYPE", DEFAULT_AUTH_TYPE),
+    envvar="CHECKIN_AUTH_TYPE",
+    default=DEFAULT_AUTH_TYPE,
+    show_default=True,
 )
 @click.option(
     "--checkin-provider",
     help="Check-in identity provider",
-    required=True,
-    default=lambda: os.environ.get("CHECKIN_PROVIDER", DEFAULT_IDENTITY_PROVIDER),
+    envvar="CHECKIN_PROVIDER",
+    default=DEFAULT_IDENTITY_PROVIDER,
+    show_default=True,
 )
 @click.option(
     "--site",
     help="Name of the site",
     required=True,
-    default=lambda: os.environ.get("EGI_SITE", None),
+    envvar="EGI_SITE",
 )
 @click.option(
     "--vo",
     help="Name of the VO",
-    default=lambda: os.environ.get("EGI_VO", None),
+    envvar="EGI_VO",
 )
 @click.argument(
     "openstack_command",
@@ -247,58 +251,62 @@ def openstack(
 @click.option(
     "--checkin-client-id",
     help="Check-in client id",
-    default=lambda: os.environ.get("CHECKIN_CLIENT_ID", None),
+    envvar="CHECKIN_CLIENT_ID",
 )
 @click.option(
     "--checkin-client-secret",
     help="Check-in client secret",
-    default=lambda: os.environ.get("CHECKIN_CLIENT_SECRET", None),
+    envvar="CHECKIN_CLIENT_SECRET",
 )
 @click.option(
     "--checkin-refresh-token",
     help="Check-in refresh token",
-    default=lambda: os.environ.get("CHECKIN_REFRESH_TOKEN", None),
+    envvar="CHECKIN_REFRESH_TOKEN",
 )
 @click.option(
     "--checkin-access-token",
     help="Check-in access token",
-    default=lambda: os.environ.get("CHECKIN_ACCESS_TOKEN", None),
+    envvar="CHECKIN_ACCESS_TOKEN",
 )
 @click.option(
     "--checkin-url",
     help="Check-in OIDC URL",
-    required=True,
-    default=lambda: os.environ.get("CHECKIN_OIDC_URL", DEFAULT_CHECKIN_URL),
+    envvar="CHECKIN_OIDC_URL",
+    default=DEFAULT_CHECKIN_URL,
+    show_default=True,
 )
 @click.option(
     "--checkin-protocol",
     help="Check-in protocol",
-    required=True,
-    default=lambda: os.environ.get("CHECKIN_PROTOCOL", DEFAULT_PROTOCOL),
+    envvar="CHECKIN_PROTOCOL",
+    default=DEFAULT_PROTOCOL,
+    show_default=True,
 )
 @click.option(
     "--checkin-auth-type",
     help="Check-in authentication type",
-    required=True,
-    default=lambda: os.environ.get("CHECKIN_AUTH_TYPE", DEFAULT_AUTH_TYPE),
+    envvar="CHECKIN_AUTH_TYPE",
+    default=DEFAULT_AUTH_TYPE,
+    show_default=True,
 )
 @click.option(
     "--checkin-provider",
     help="Check-in identity provider",
-    required=True,
-    default=lambda: os.environ.get("CHECKIN_PROVIDER", DEFAULT_IDENTITY_PROVIDER),
+    envvar="CHECKIN_PROVIDER",
+    default=DEFAULT_IDENTITY_PROVIDER,
+    show_default=True,
 )
 @click.option(
     "--site",
     help="Name of the site",
     required=True,
-    default=lambda: os.environ.get("EGI_SITE", None),
+    envvar="EGI_SITE",
 )
 @click.option(
     "--vo",
     help="Name of the VO",
     required=True,
-    default=lambda: os.environ.get("EGI_VO", None),
+    envvar="EGI_VO",
 )
 def openstack_int(
         checkin_client_id,

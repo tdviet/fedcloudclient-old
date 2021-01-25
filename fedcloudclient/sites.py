@@ -1,5 +1,3 @@
-import json
-import os
 from pathlib import Path
 from urllib.request import urlopen, Request
 
@@ -174,7 +172,7 @@ def site():
     "--site",
     help="Name of the site",
     required=True,
-    default=lambda: os.environ.get("EGI_SITE", None),
+    envvar="EGI_SITE",
 )
 def show(site):
     """
@@ -182,7 +180,7 @@ def show(site):
     """
     site_info = find_site_data(site)
     if site_info:
-        print(json.dumps(site_info, indent=2))
+        print(yaml.dump(site_info, sort_keys=True))
     else:
         print("Site %s not found" % site)
 
@@ -192,13 +190,13 @@ def show(site):
     "--site",
     help="Name of the site",
     required=True,
-    default=lambda: os.environ.get("EGI_SITE", None),
+    envvar="EGI_SITE",
 )
 @click.option(
     "--vo",
     help="Name of the VO",
     required=True,
-    default=lambda: os.environ.get("EGI_VO", None),
+    envvar="EGI_VO",
 )
 def show_project_id(site, vo):
     """
@@ -218,7 +216,7 @@ def show_all():
     """
     read_site_config()
     for site_info in site_config_data:
-        site_info_str = json.dumps(site_info, indent=2)
+        site_info_str = yaml.dump(site_info, sort_keys=True)
         print(site_info_str)
 
 

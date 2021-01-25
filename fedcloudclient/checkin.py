@@ -1,6 +1,5 @@
 from __future__ import print_function
 
-import os
 import re
 import time
 from datetime import datetime
@@ -162,25 +161,26 @@ def token():
     "--checkin-client-id",
     help="Check-in client id",
     required=True,
-    default=lambda: os.environ.get("CHECKIN_CLIENT_ID", None),
+    envvar="CHECKIN_CLIENT_ID",
 )
 @click.option(
     "--checkin-client-secret",
     help="Check-in client secret",
     required=True,
-    default=lambda: os.environ.get("CHECKIN_CLIENT_SECRET", None),
+    envvar="CHECKIN_CLIENT_SECRET",
 )
 @click.option(
     "--checkin-refresh-token",
     help="Check-in refresh token",
     required=True,
-    default=lambda: os.environ.get("CHECKIN_REFRESH_TOKEN", None),
+    envvar="CHECKIN_REFRESH_TOKEN",
 )
 @click.option(
     "--checkin-url",
     help="Check-in OIDC URL",
-    required=True,
-    default=lambda: os.environ.get("CHECKIN_OIDC_URL", DEFAULT_CHECKIN_URL),
+    envvar="CHECKIN_OIDC_URL",
+    default=DEFAULT_CHECKIN_URL,
+    show_default=True,
 )
 def refresh(
         checkin_client_id,
@@ -204,12 +204,12 @@ def refresh(
 @click.option(
     "--checkin-refresh-token",
     help="Check-in refresh token",
-    default=lambda: os.environ.get("CHECKIN_REFRESH_TOKEN", None),
+    envvar="CHECKIN_REFRESH_TOKEN",
 )
 @click.option(
     "--checkin-access-token",
     help="Check-in access token",
-    default=lambda: os.environ.get("CHECKIN_ACCESS_TOKEN", None),
+    envvar="CHECKIN_ACCESS_TOKEN",
 )
 def check(
         checkin_refresh_token,
@@ -257,27 +257,29 @@ def check(
 @click.option(
     "--checkin-client-id",
     help="Check-in client id",
-    default=lambda: os.environ.get("CHECKIN_CLIENT_ID", None),
+    envvar="CHECKIN_CLIENT_ID",
 )
 @click.option(
     "--checkin-client-secret",
     help="Check-in client secret",
-    default=lambda: os.environ.get("CHECKIN_CLIENT_SECRET", None),
+    envvar="CHECKIN_CLIENT_SECRET",
 )
 @click.option(
     "--checkin-refresh-token",
     help="Check-in client id",
-    default=lambda: os.environ.get("CHECKIN_REFRESH_TOKEN", None),
+    envvar="CHECKIN_REFRESH_TOKEN",
 )
 @click.option(
     "--checkin-access-token",
     help="Check-in access token",
-    default=lambda: os.environ.get("CHECKIN_ACCESS_TOKEN", None),
+    envvar="CHECKIN_ACCESS_TOKEN",
 )
 @click.option(
     "--checkin-url",
     help="Check-in OIDC URL",
-    default=lambda: os.environ.get("CHECKIN_OIDC_URL", DEFAULT_CHECKIN_URL),
+    envvar="CHECKIN_OIDC_URL",
+    default=DEFAULT_CHECKIN_URL,
+    show_default=True,
 )
 def list_vos(
         checkin_client_id,
