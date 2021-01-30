@@ -10,6 +10,9 @@ getting tokens, **fedcloudclient.endpoint** for searching endpoints via GOCDB, g
 Keystone, **fedcloudclient.sites** manages site configuration and finally **fedcloudclient.openstack** for
 performing Openstack operations.
 
+A short presentation of the fedcloudclient is available at 
+[Google drive](https://docs.google.com/presentation/d/1aOdcceztXe8kZaIeVnioF9B0vIHLzJeklSNOdVCL3Rw/edit?usp=sharing). 
+
 The full documentation, including installation, usage and API description is available 
 at [readthedocs.io](https://fedcloudclient.readthedocs.io/)
 

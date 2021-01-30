@@ -8,13 +8,13 @@ Simply use the following **pip3** command (should be done without root privilege
 
 ::
 
-    $ pip3 install -U fedcloudclient
+    $ pip3 install fedcloudclient
 
 That will install latest version **fedcloudclient** package together with its required packages (like **openstackclient**).
 It will also create executable files **"fedcloud"** and **"openstack"** and add them to corresponding directory
 according to your Python execution environment (*$VIRTUAL_ENV/bin* for executing *pip3* in Python virtual environment,
-*~/.local/bin* for executing *pip3* as user, and */usr/local/bin* when executing *pip3* as root). Make sure to
-add *~/.local/bin* to $PATH if installing as user.
+*~/.local/bin* for executing *pip3* as user (with *--user* option), and */usr/local/bin* when executing *pip3* as root).
+Make sure to add *~/.local/bin* to $PATH if installing as user.
 
 Check if the installation is correct by executing the client
 
